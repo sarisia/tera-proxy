@@ -173,3 +173,4 @@ tera-proxy is just one of many projects aimed at modding and extending TERA func
 [@teralove]: <https://github.com/teralove>
 [@TeraProxy]: <https://github.com/TeraProxy>
 [@wuaw]: <https://github.com/wuaw>
+[@Xtortion]: <https://github.com/Xtortion>
