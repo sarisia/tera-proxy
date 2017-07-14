@@ -104,6 +104,8 @@ categories:
     desc: Ignores flying mount stamina for infinite flying.
   - repo: soler91/CustomMounts
     desc: Use any mount (Clientside).
+  - repo: Xtortion/Autostance
+    desc: Automatically uses stance skills if they aren't activated.
 ---
 
 Here is a directory with links to a number of GitHub projects and developers who work with tera-proxy or other TERA modding programs. That means **all projects directly linked here are free and open source**.
