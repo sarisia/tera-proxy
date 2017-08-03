@@ -54,6 +54,8 @@ categories:
     desc: Prevents submitting accidental typos for other modules' "!" prefixed commands.
   - repo: Mister-Kay/no-more-crazy-capes
     desc: Removes exploding physics glitch from some back items.
+  - repo: Mister-Kay/no-more-noctenium-lag
+    desc: Removes client-side lag from specific packets while noctenium consumable is active.
   - repo: teralove/parcel-helper
     desc: Instantly accept all parcels and delete all read messages.
   - repo: teralove/party-death-markers
