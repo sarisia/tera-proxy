@@ -64,7 +64,7 @@ categories:
     desc: Switch character via chat command.
   - repo: teralove/remove-idles
     desc: Disable idle animations.
-  - repo: eemj/skill-resets
+  - repo: pinkipi/skill-resets
     desc: Pops up a message whenever a skill resets.
   - repo: baldera-mods/skip-cutscenes
     author: meishuu
@@ -138,7 +138,6 @@ For any other kind of module, you may want to take a look at public repositories
 
 * [{% avatar baldera-mods %} baldera-mods][@baldera-mods] &ndash; [{% avatar meishuu %} meishuu][@meishuu]'s mods
 * [{% avatar Bernkastel-0 %} Bernkastel-0][@Bernkastel-0] &ndash; [tumblr](http://teraproxy.tumblr.com/)
-* [{% avatar eemj %} eemj][@eemj]
 * [{% avatar pinkipi %} pinkipi][@pinkipi] &ndash; [Discord](https://discord.gg/RR9zf85)
 * [{% avatar Saegusae %} Saegusae][@Saegusae]
 * [{% avatar soler91 %} soler91][@soler91]
@@ -162,7 +161,6 @@ tera-proxy is just one of many projects aimed at modding and extending TERA func
 [@alexrp]: <https://github.com/alexrp> "Alex Rønne Petersen"
 [@baldera-mods]: <https://github.com/baldera-mods> "Meishu's Baldera Mods"
 [@Bernkastel-0]: <https://github.com/Bernkastel-0> "Bernkastel"
-[@eemj]: <https://github.com/eemj> "Jamie"
 [@Foglio1024]: <https://github.com/Foglio1024> "Foglio"
 [@Gl0]: <https://github.com/Gl0> "Gl0"
 [@lunyx]: <https://github.com/lunyx> "Daniel"
