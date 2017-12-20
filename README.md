@@ -1,4 +1,4 @@
-### Currently maintained branch of tera-proxy. Discord: [![Discord](https://discordapp.com/api/guilds/281311998765957121/widget.png)](https://discord.gg/RR9zf85)
+### Fork of Meishuu's/Pinkie Pie's tera-proxy with built-in support for automatic updates. Feel free to visit my Discord server at https://discord.gg/maqBmJV
 
 * Set your region in bin/config.json
 * Mods go in bin/node_modules/
