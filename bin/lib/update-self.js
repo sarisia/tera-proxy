@@ -39,8 +39,8 @@ async function autoUpdateSelf() {
     {
       let failedFiles = [];
       for(let result of results) {
-        if(!results[1])
-          failedFiles.push(results[0]);
+        if(!result[1])
+          failedFiles.push(result[0]);
       }
 
       if(failedFiles.length > 0)
@@ -52,7 +52,7 @@ async function autoUpdateSelf() {
       return false;
     }
   } catch(e) {
-    console.error("ERROR: Unable to auto-update the proxy!:%s\nPlease join %s and check the #info and #help channels for further instructions.", e, DiscordURL);
+    console.error("ERROR: Unable to auto-update the proxy!: %s\nPlease join %s and check the #info and #help channels for further instructions.", e, DiscordURL);
     return Promise.reject(e);
   }
 }
