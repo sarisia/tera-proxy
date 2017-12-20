@@ -10,7 +10,7 @@ async function autoUpdateFile(file, filepath, url) {
   try {
     //console.log("Updating %s", filepath);
     const updatedFile = await request({url: url, encoding: null});
-  
+
     let dir = path.dirname(filepath);
     if (!fs.existsSync(dir))
       fs.mkdirSync(dir);
@@ -30,7 +30,7 @@ async function autoUpdateModule(root, updateData, serverIndex = 0) {
       if(!fs.existsSync(filepath) || crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex") !== manifest["files"][file])
         promises.push(autoUpdateFile(file, filepath, updateData["servers"][serverIndex] + file));
     }
-    
+
     return {"defs": manifest["defs"], "results": await Promise.all(promises)};
   } catch(e) {
     if(serverIndex + 1 < updateData["servers"].length)
@@ -42,41 +42,41 @@ async function autoUpdateModule(root, updateData, serverIndex = 0) {
 
 async function autoUpdateDefs(requiredDefs) {
   let promises = [];
-  
+
   for(let def of requiredDefs) {
     let filepath = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'protocol', def);
     if(!fs.existsSync(filepath))
       promises.push(autoUpdateFile(def, filepath, TeraDataAutoUpdateServer + "protocol/" + def));
   }
-  
+
   return promises;
 }
 
 async function autoUpdateMaps() {
   let promises = [];
-  
+
   const mappings = await request({url: TeraDataAutoUpdateServer + 'mappings.json', json: true});
   for(let region in mappings) {
     let version = mappings[region];
     let protocol_name = 'protocol.' + version.toString() + '.map';
     let sysmsg_name = 'sysmsg.' + version.toString() + '.map';
-    
+
     let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', protocol_name);
     if(!fs.existsSync(protocol_filename))
       promises.push(autoUpdateFile(protocol_name, protocol_filename, TeraDataAutoUpdateServer + "map/" + protocol_name));
-    
+
     let sysmsg_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', sysmsg_name);
     if(!fs.existsSync(sysmsg_filename))
       promises.push(autoUpdateFile(sysmsg_name, sysmsg_filename, TeraDataAutoUpdateServer + "map/" + sysmsg_name));
   }
-  
+
   return promises;
 }
 
 async function autoUpdate(moduleBase, modules) {
   console.log("[update] Auto-update started!");
   let requiredDefs = new Set(["C_CHECK_VERSION.1.def"]);
-  
+
   let successModules = [];
   let legacyModules = [];
   let failedModules = [];
@@ -91,16 +91,16 @@ async function autoUpdate(moduleBase, modules) {
             const moduleConfig = await autoUpdateModule(root, updateData);
             for(let def in moduleConfig["defs"])
               requiredDefs.add(def + "." + moduleConfig["defs"][def].toString() + ".def");
-          
+
             let failedFiles = [];
             for(let result of moduleConfig["results"]) {
-              if(!result[1]) 
+              if(!result[1])
                 failedFiles.push(result[0]);
             }
-            
+
             if(failedFiles.length > 0)
               throw "Failed to update the following module files:\n - " + failedFiles.join('\n - ');
-          
+
             successModules.push(module);
           } catch(e) {
             console.error("ERROR: Unable to auto-update module %s:\n%s", module, e);
@@ -111,7 +111,7 @@ async function autoUpdate(moduleBase, modules) {
             } else {
               console.error("Please contact the module author or join %s and ask in the #help channel.", DiscordURL);
             }
-            
+
             failedModules.push(module);
           }
         } catch(e) {
@@ -119,27 +119,27 @@ async function autoUpdate(moduleBase, modules) {
           failedModules.push(module);
         }
       } catch(_) {
-        // legacy module without auto-update functionality        
+        // legacy module without auto-update functionality
         legacyModules.push(module);
       }
     } else {
       legacyModules.push(module);
     }
   }
-  
+
   let updatePromises = await autoUpdateDefs(requiredDefs);
   updatePromises.concat(await autoUpdateMaps());
-  
+
   let results = await Promise.all(updatePromises);
   let failedFiles = [];
   for(let result of results) {
     if(!result[1])
       failedFiles.push(result[0]);
   }
-  
+
   if(failedFiles.length > 0)
     console.error("ERROR: Unable to update the following def/map files. Please join %s and report this error in the #help channel!\n - %s", DiscordURL, failedFiles.join('\n - '));
-  
+
   console.log("[update] Auto-update complete!");
   return {"tera-data": (failedFiles.length == 0), "updated": successModules, "legacy": legacyModules, "failed": failedModules};
 }

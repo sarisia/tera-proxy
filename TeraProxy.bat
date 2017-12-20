@@ -1,4 +1,4 @@
 @setlocal enableextensions
 @cd /d "%~dp0/bin/lib"
 
-START cmd.exe /k "node proxy.js"
+START cmd.exe /k "node index.js"

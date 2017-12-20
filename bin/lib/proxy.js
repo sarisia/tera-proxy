@@ -97,9 +97,9 @@ function createServ(target, socket) {
   autoUpdate(moduleBase, modules).then((updateResult) => {
     if(!updateResult["tera-data"])
       console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
-  
+
     const { Connection, RealClient } = require("tera-proxy-game");
-    
+
     const connection = new Connection();
     const client = new RealClient(connection, socket);
     const srvConn = connection.connect(client, {
