@@ -31,10 +31,10 @@ async function autoUpdateSelf() {
         promises.push(autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file));
     }
 
+    let results = Promise.all(promises);
     if(results.length > 0)
     {
       let failedFiles = [];
-      let results = Promise.all(promises);
       for(let result of results) {
         if(!results[1])
           failedFiles.push(results[0]);
