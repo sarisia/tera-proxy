@@ -25,7 +25,7 @@ async function autoUpdateSelf() {
     const manifest = await request({url: TeraProxyAutoUpdateServer + 'manifest.json', json: true});
     if(!manifest["files"])
       throw "Invalid manifest!";
-  
+
     let promises = [];
     for(let file in manifest["files"]) {
       let filepath = path.join(__dirname, "..", "..", file);

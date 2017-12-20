@@ -5,7 +5,7 @@
     "bin/lib/proxy.js": "6eea3d86bab22527c5c2fca503070d152341b164d47e9c140e6fd0eafe530f9a",
     "bin/lib/regions.js": "950fceee74f0b783624cb98e63eb41a56aa61bdfdefd85e3fb886982236c252e",
     "bin/lib/update.js": "dcf6d33267249185b1f747e96a776bc3363b649df23267266dbb9835bc7a593d",
-    "bin/lib/update-self.js": "390880be4cb1f88c0a48f5a48c6227a5cefdc799d1efe655dd07a3d4439b6b80",
+    "bin/lib/update-self.js": "d6bc88300245ffc60afb964e2243e764e41e6c9dbe68b161e045efc784ec9acc",
     "bin/lib/res/servers-eu.json": "2478cc8f3c4298cddb6b62efe860a096b82dcf8d8b4e3ebc63b5e92fd8aabfbd",
     "bin/lib/res/servers-eu-test.json": "3d246de5b38e3d5fb7d7ad64c1055725e4d65dbf66434c3a4aac5fcc4325991b",
     "bin/lib/res/servers-jp.json": "64fd1fd75c658399d215a119c4befcf4e2c04d5232feee921e16a8645b4d9077",
