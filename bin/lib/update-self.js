@@ -31,7 +31,7 @@ async function autoUpdateSelf() {
         promises.push(autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file));
     }
 
-    let results = Promise.all(promises);
+    let results = await Promise.all(promises);
     if(results.length > 0)
     {
       let failedFiles = [];
