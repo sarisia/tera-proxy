@@ -1,5 +1,7 @@
 const REGION = require("../config.json").region;
 const REGIONS = require("./regions");
+const request = require('request-promise-native');
+const crypto = require('crypto');
 const currentRegion = REGIONS[REGION];
 
 if (!currentRegion) {
@@ -87,42 +89,128 @@ function listenHandler(err) {
   }
 }
 
-const { Connection, RealClient } = require("tera-proxy-game");
+const TeraDataAutoUpdateServer = "https://raw.githubusercontent.com/hackerman-caali/tera-data/master/";
+
+async function autoUpdateFile(filepath, url) {
+  try {
+    console.log("Updating %s", filepath);
+    const updatedFile = await request({url: url, encoding: null});
+  
+    let dir = path.dirname(filepath);
+    if (!fs.existsSync(dir))
+      fs.mkdirSync(dir);
+    fs.writeFileSync(filepath, updatedFile);
+  } catch (e) {
+    console.log("ERROR: Failed to auto-update file %s:\n%s", filepath, e);
+  }
+}
+
+async function autoUpdateModule(root, updateData, serverIndex = 0) {
+  try {
+    const manifest = await request({url: updateData["servers"][serverIndex] + 'manifest.json', json: true});
+    let promises = [];
+    for(let file of manifest["files"]) {
+      let filepath = path.join(root, file[0]);
+      if(crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex") !== file[1])
+        promises.push(autoUpdateFile(filepath, updateData["servers"][serverIndex] + file[0]));
+    }
+    return {"defs": manifest["defs"], "files": promises};
+  } catch(e) {
+    if(serverIndex + 1 < updateData["servers"].length)
+        return autoUpdateModule(root, updateData, serverIndex + 1);
+    else
+        return Promise.reject(e);
+  }
+}
+
+async function autoUpdate() {
+  console.log("[update] Auto-update started!");
+  let requiredDefs = new Set(["C_CHECK_VERSION.1.def"]);
+  let updatePromises = [];
+  
+  for (let i = 0, arr = modules, len = arr.length; i < len; ++i) {
+    if(!arr[i].endsWith('.js')) {
+      let root = path.join(moduleBase, arr[i]);
+      try {
+        let updateData = fs.readFileSync(path.join(root, 'module.json'), 'utf8');
+        try {
+          const moduleConfig = await autoUpdateModule(root, JSON.parse(updateData));
+          for(let def of moduleConfig["defs"])
+              requiredDefs.add(def[0] + "." + def[1].toString() + ".def");
+          updatePromises.concat(moduleConfig["files"]);
+        } catch(e) {
+          console.log("ERROR: Failed to auto-update module %s:\n%s", arr[i], e);
+        }
+      } catch(_) { /* legacy module without auto-update functionality */ }
+    }
+  }
+  
+  for(let def of requiredDefs) {
+    let filepath = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'protocol', def);
+    if(!fs.existsSync(filepath))
+      updatePromises.push(autoUpdateFile(filepath, TeraDataAutoUpdateServer + "protocol/" + def));
+  }
+  
+  const mappings = await request({url: TeraDataAutoUpdateServer + 'mappings.json', json: true});
+  for(let region in mappings) {
+    let version = mappings[region];
+    let protocol_name = 'protocol.' + version.toString() + '.map';
+    let sysmsg_name = 'sysmsg.' + version.toString() + '.map';
+    
+    let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', protocol_name);
+    if(!fs.existsSync(protocol_filename))
+      updatePromises.push(autoUpdateFile(protocol_filename, TeraDataAutoUpdateServer + "map/" + protocol_name));
+    
+    let sysmsg_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', sysmsg_name);
+    if(!fs.existsSync(sysmsg_filename))
+      updatePromises.push(autoUpdateFile(sysmsg_filename, TeraDataAutoUpdateServer + "map/" + sysmsg_name));
+  }
+    
+  await Promise.all(updatePromises);
+  console.log("[update] Auto-update complete!");
+}
+
 function createServ(target, socket) {
   socket.setNoDelay(true);
 
-  const connection = new Connection();
-  const client = new RealClient(connection, socket);
-  const srvConn = connection.connect(client, {
-    host: target.ip,
-    port: target.port
-  });
-
   populateModulesList();
 
-  for (let i = 0, arr = modules, len = arr.length; i < len; ++i)
-    connection.dispatch.load(arr[i], module);
+  autoUpdate().then(() => {
+    const { Connection, RealClient } = require("tera-proxy-game");
+    
+    const connection = new Connection();
+    const client = new RealClient(connection, socket);
+    const srvConn = connection.connect(client, {
+      host: target.ip,
+      port: target.port
+    });
 
-  let remote = "???";
+    for (let i = 0, arr = modules, len = arr.length; i < len; ++i)
+      connection.dispatch.load(arr[i], module);
 
-  socket.on("error", console.warn);
+    let remote = "???";
 
-  srvConn.on("connect", () => {
-    remote = socket.remoteAddress + ":" + socket.remotePort;
-    console.log("[connection] routing %s to %s:%d", remote, srvConn.remoteAddress, srvConn.remotePort);
-  })
+    socket.on("error", console.warn);
 
-  srvConn.on("error", console.warn);
+    srvConn.on("connect", () => {
+      remote = socket.remoteAddress + ":" + socket.remotePort;
+      console.log("[connection] routing %s to %s:%d", remote, srvConn.remoteAddress, srvConn.remotePort);
+    })
 
-  srvConn.on("close", () => {
-    console.log("[connection] %s disconnected", remote);
-    console.log("[proxy] unloading user modules");
-    for (let i = 0, arr = Object.keys(require.cache), len = arr.length; i < len; ++i) {
-      const key = arr[i];
-      if (key.startsWith(moduleBase)) {
-        delete require.cache[key];
+    srvConn.on("error", console.warn);
+
+    srvConn.on("close", () => {
+      console.log("[connection] %s disconnected", remote);
+      console.log("[proxy] unloading user modules");
+      for (let i = 0, arr = Object.keys(require.cache), len = arr.length; i < len; ++i) {
+        const key = arr[i];
+        if (key.startsWith(moduleBase)) {
+          delete require.cache[key];
+        }
       }
-    }
+    })
+  }).catch((e) => {
+    console.log("ERROR: Unable to auto-update: %s", e);
   })
 }
 
