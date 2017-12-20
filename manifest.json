@@ -1,11 +1,11 @@
 {
   "files": {
     "bin/lib/hosts.js": "e554c3d2593be08afc60f3db74ca96644c7b267e12d546cfbf5ef61c965da99a",
-    "bin/lib/netstat.js": "3839995f362771348e10ac3004ff1715bbed5a831cac856963168bb448c56476",
+    "bin/lib/netstat.js": "b4b26462dd94fa9765c1604af7257bcb18852cacf7e4a9cefd5e345ceea10f7e",
     "bin/lib/proxy.js": "6eea3d86bab22527c5c2fca503070d152341b164d47e9c140e6fd0eafe530f9a",
-    "bin/lib/regions.js": "950fceee74f0b783624cb98e63eb41a56aa61bdfdefd85e3fb886982236c252e",
-    "bin/lib/update.js": "dcf6d33267249185b1f747e96a776bc3363b649df23267266dbb9835bc7a593d",
-    "bin/lib/update-self.js": "d6bc88300245ffc60afb964e2243e764e41e6c9dbe68b161e045efc784ec9acc",
+    "bin/lib/regions.js": "4dc73e201497da22a134ee399e8db4d372f59ffaaacde7f4aeb2522f63ba23ba",
+    "bin/lib/update.js": "1ba8f68431f2c00404b65c351b8e541aa2d970f9f41febb641f6bb737578482c",
+    "bin/lib/update-self.js": "926ef3a44d4d5815c193ec37c05a519a1eb7b3264f4b639df706f564106eed4c",
     "bin/lib/res/servers-eu.json": "2478cc8f3c4298cddb6b62efe860a096b82dcf8d8b4e3ebc63b5e92fd8aabfbd",
     "bin/lib/res/servers-eu-test.json": "3d246de5b38e3d5fb7d7ad64c1055725e4d65dbf66434c3a4aac5fcc4325991b",
     "bin/lib/res/servers-jp.json": "64fd1fd75c658399d215a119c4befcf4e2c04d5232feee921e16a8645b4d9077",
