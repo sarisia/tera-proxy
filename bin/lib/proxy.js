@@ -111,7 +111,7 @@ async function autoUpdateModule(root, updateData, serverIndex = 0) {
     let promises = [];
     for(let file of manifest["files"]) {
       let filepath = path.join(root, file[0]);
-      if(crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex") !== file[1])
+      if(!fs.existsSync(filepath) || crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex") !== file[1])
         promises.push(autoUpdateFile(filepath, updateData["servers"][serverIndex] + file[0]));
     }
     return {"defs": manifest["defs"], "files": promises};
