@@ -8,7 +8,6 @@ const DiscordURL = "https://discord.gg/maqBmJV";
 
 async function autoUpdateFile(file, filepath, url) {
   try {
-    console.log("Updating %s", filepath);
     const updatedFile = await request({url: url, encoding: null});
 
     let dir = path.dirname(filepath);
@@ -49,6 +48,7 @@ async function autoUpdateSelf() {
       console.log("Proxy updated!");
       return true;
     } else {
+      console.log("Proxy is up to date!");
       return false;
     }
   } catch(e) {

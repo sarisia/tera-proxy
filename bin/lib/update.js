@@ -8,7 +8,6 @@ const DiscordURL = "https://discord.gg/maqBmJV";
 
 async function autoUpdateFile(file, filepath, url) {
   try {
-    //console.log("Updating %s", filepath);
     const updatedFile = await request({url: url, encoding: null});
 
     let dir = path.dirname(filepath);
