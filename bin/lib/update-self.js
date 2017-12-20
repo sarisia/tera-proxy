@@ -24,9 +24,12 @@ async function autoUpdateFile(file, filepath, url) {
 async function autoUpdateSelf() {
   try {
     const manifest = await request({url: TeraProxyAutoUpdateServer + 'manifest.json', json: true});
+    if(!manifest["files"])
+      throw "Invalid manifest!";
+  
     let promises = [];
     for(let file in manifest["files"]) {
-      let filepath = path.join(__dirname, file);
+      let filepath = path.join(__dirname, "..", "..", file);
       if(!fs.existsSync(filepath) || crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex") !== manifest["files"][file])
         promises.push(autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file));
     }
