@@ -8,7 +8,7 @@ const DiscordURL = "https://discord.gg/maqBmJV";
 
 async function autoUpdateFile(file, filepath, url) {
   try {
-    //console.log("Updating %s", filepath);
+    console.log("Updating %s", filepath);
     const updatedFile = await request({url: url, encoding: null});
 
     let dir = path.dirname(filepath);
@@ -26,7 +26,7 @@ async function autoUpdateSelf() {
     const manifest = await request({url: TeraProxyAutoUpdateServer + 'manifest.json', json: true});
     let promises = [];
     for(let file in manifest["files"]) {
-      let filepath = path.join(root, file);
+      let filepath = path.join(__dirname, file);
       if(!fs.existsSync(filepath) || crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex") !== manifest["files"][file])
         promises.push(autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file));
     }
