@@ -3,11 +3,11 @@
 * Feel free to visit my Discord server at https://discord.gg/maqBmJV
 
 ### Installation instructions
-* Set your region in bin/config.json
-* Mods go in bin/node_modules/
-* Run TeraProxy.bat as Administrator, then start the game
+* Set your region in `bin/config.json`
 * The first auto-update after installing the proxy or new mods may take a few seconds. This is because all required files will be downloaded automatically.
-* You can install legacy mods that do not install auto-updating. To do so, just copy the corresponding folder into `node_modules` as you would have before.
+* A lot of popular modules are already pre-installed for your convenience, but deactivated per default. Check out `bin/node_modules/` - deactivated mods will have a `_` prefixed to their name. In order to activate them, remove the `_` from the folder name and restart your proxy.
+* You can install legacy mods that do not install auto-updating. To do so, just copy the corresponding folder into `bin/node_modules/` as you would have before.
+* Run `TeraProxy.bat` *as Administrator*, then start the game
 
 ### Popular modules that are currently compatible
 * [Skill Prediction (SaltyMonkey's Fork)](https://github.com/SaltyMonkey/skill-prediction)
@@ -23,6 +23,6 @@
 * You'll need to create two files in your root update directory (called UpdateRoot from now on): `module.json` and `manifest.json`.
 * `module.json` contains the UpdateRoot URL and optional other data. See [here](https://github.com/hackerman-caali/data-logger/blob/new-auto-updates/update/CaaliLogger/module.json) for an example.
 * `manifest.json` contains a list of all files required for your module (relative to its root directory) and their corresponding SHA256 hashes. Furthermore, you must specify a list of all packet definitions and versions required by your module here. See [here](https://github.com/hackerman-caali/data-logger/blob/new-auto-updates/update/CaaliLogger/manifest.json) for an example.
-* That's it! All you need to do now is tell your users to delete any legacy version of your module that they have already installed, and place the `module.json` file in a new, empty directory in their `node_modules` folder. `manifest.json` must not be distributed to your users, it only has to reside in your UpdateRoot. The proxy will recognize the module as auto-updating compatible and install all files from your UpdateRoot. It will also download required packet definitions, if necessary.
+* That's it! All you need to do now is tell your users to delete any legacy version of your module that they have already installed, and place the `module.json` file in a new, empty directory in their `bin/node_modules/` folder. `manifest.json` must not be distributed to your users, it only has to reside in your UpdateRoot. The proxy will recognize the module as auto-updating compatible and install all files from your UpdateRoot. It will also download required packet definitions, if necessary.
 * NOTE: Whenever you push an update, remember to update `manifest.json` as well!
 * NOTE: Keep in mind that everytime the user logs in, all files with checksums mismatching those in your manifest.json will be overwritten. This will overwrite any changes the user has made to them, so remember to move all user configuration to separate files that are not referenced in the manifest file. If those config files don't exist, your module should be able to create them in a default state or gracefully handle that internally, in order to allow installation using only the module.json file.
