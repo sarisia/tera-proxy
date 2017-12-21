@@ -1,4 +1,4 @@
-### Fork of Meishuu's/Pinkie Pie's tera-proxy with built-in support for automatic updates.
+### Fork of Meishuu's/Pinkie Pie's tera-proxy with built-in support for automatic updates
 * It will auto-update your opcode mappings, packet definitions, and compatible installed modules. You no longer need do manually update _anything_!
 * Feel free to visit my Discord server at https://discord.gg/maqBmJV
 
@@ -7,16 +7,22 @@
 * Mods go in bin/node_modules/
 * Run TeraProxy.bat as Administrator, then start the game
 * The first auto-update after installing the proxy or new mods may take a few seconds. This is because all required files will be downloaded automatically.
+* You can install legacy mods that do not install auto-updating. To do so, just copy the corresponding folder into `node_modules` as you would have before.
 
 ### Popular modules that are currently compatible
-* [Skill Prediction (SaltyMonkey's Fork](https://github.com/SaltyMonkey/skill-prediction)
+* [Skill Prediction (SaltyMonkey's Fork)](https://github.com/SaltyMonkey/skill-prediction)
+* [FPS Utils](https://github.com/hugedong69/fps-utils)
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
 * [Command / Chat-Sanitizer / Swim-Fix (Pinkie Pie's default modules)](https://github.com/pinkipi/tera-proxy)
 * [CaaliLogger / CaaliStateTracker](https://github.com/hackerman-caali/data-logger)
+
+### Popular modules that are planned to be made compatible in the future
+* Bern's scripts
 
 ### Developers: Adding auto-update compatibility to your module
 * You'll need to create two files in your root update directory (called UpdateRoot from now on): `module.json` and `manifest.json`.
 * `module.json` contains the UpdateRoot URL and optional other data. See [here](https://github.com/hackerman-caali/data-logger/blob/new-auto-updates/update/CaaliLogger/module.json) for an example.
 * `manifest.json` contains a list of all files required for your module (relative to its root directory) and their corresponding SHA256 hashes. Furthermore, you must specify a list of all packet definitions and versions required by your module here. See [here](https://github.com/hackerman-caali/data-logger/blob/new-auto-updates/update/CaaliLogger/manifest.json) for an example.
 * That's it! All you need to do now is tell your users to delete any legacy version of your module that they have already installed, and place the `module.json` file in a new, empty directory in their `node_modules` folder. `manifest.json` must not be distributed to your users, it only has to reside in your UpdateRoot. The proxy will recognize the module as auto-updating compatible and install all files from your UpdateRoot. It will also download required packet definitions, if necessary.
-* Whenever you push an update, remember to update `manifest.json` as well!
+* NOTE: Whenever you push an update, remember to update `manifest.json` as well!
+* NOTE: Keep in mind that everytime the user logs in, all files with checksums mismatching those in your manifest.json will be overwritten. This will overwrite any changes the user has made to them, so remember to move all user configuration to separate files that are not referenced in the manifest file. If those config files don't exist, your module should be able to create them in a default state or gracefully handle that internally, in order to allow installation using only the module.json file.
