@@ -29,7 +29,7 @@ async function autoUpdateSelf() {
     let promises = [];
     for(let file in manifest["files"]) {
       let filepath = path.join(__dirname, "..", "..", file);
-      if(!fs.existsSync(filepath) || crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex") !== manifest["files"][file])
+      if(!fs.existsSync(filepath) || crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== manifest["files"][file].toUpperCase())
         promises.push(autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file));
     }
 
@@ -45,10 +45,10 @@ async function autoUpdateSelf() {
       if(failedFiles.length > 0)
         throw "Failed to update the following proxy files:\n - " + failedFiles.join('\n - ');
 
-      console.log("Proxy updated!");
+      console.log("[update] Proxy updated!");
       return true;
     } else {
-      console.log("Proxy is up to date!");
+      console.log("[update] Proxy is up to date!");
       return false;
     }
   } catch(e) {
