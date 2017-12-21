@@ -4,15 +4,15 @@
     "bin/lib/netstat.js": "b4b26462dd94fa9765c1604af7257bcb18852cacf7e4a9cefd5e345ceea10f7e",
     "bin/lib/proxy.js": "6eea3d86bab22527c5c2fca503070d152341b164d47e9c140e6fd0eafe530f9a",
     "bin/lib/regions.js": "4dc73e201497da22a134ee399e8db4d372f59ffaaacde7f4aeb2522f63ba23ba",
-    "bin/lib/update.js": "01204984d51c1bb7274f7862590d87061eef55dd15b48c9ac972622de040f1fc",
-    "bin/lib/update-self.js": "f5b3060864905dd1e94aaf9fdea24aab8b387ba9becad14ff7489eace70aaf42",
-    "bin/lib/res/servers-eu.json": "2478cc8f3c4298cddb6b62efe860a096b82dcf8d8b4e3ebc63b5e92fd8aabfbd",
-    "bin/lib/res/servers-eu-test.json": "3d246de5b38e3d5fb7d7ad64c1055725e4d65dbf66434c3a4aac5fcc4325991b",
-    "bin/lib/res/servers-jp.json": "64fd1fd75c658399d215a119c4befcf4e2c04d5232feee921e16a8645b4d9077",
-    "bin/lib/res/servers-kr.json": "d7c276eb311ac4121473da0856dfbf111bf713099755636acd3b4ce5431ad9d9",
-    "bin/lib/res/servers-kr-test.json": "f76710b4cb400340da9d54011a5035bec5ca05688eead657f4d5d59462abee46",
-    "bin/lib/res/servers-na.json": "998df69f41da6a0ea877909ba688831c501b08821fc3ee31ac7c9b038f1f9b2a",
-    "bin/lib/res/servers-ru.json": "284ce052b52422ed8e43901fcb94d98ef055d352d23fa5b9dadda87d0bd4d8c9",
-    "bin/lib/res/servers-tw.json": "4189efb922b24cb82919209546ce3119ff59ee3c5cac815f17399f3b786a7631"
+    "bin/lib/update.js": "0451947217064e3838c246469c540b9e93cf4d1d0a10bc2242c01c716a7074d4",
+    "bin/lib/update-self.js": "90f8f5ac582dbf77f9e1b90bb22b2aa7c47f977047b78b93481dac463d01d5f2",
+    "bin/lib/res/servers-eu.json": {"overwrite": false, "hash": "2478cc8f3c4298cddb6b62efe860a096b82dcf8d8b4e3ebc63b5e92fd8aabfbd"},
+    "bin/lib/res/servers-eu-test.json": {"overwrite": false, "hash": "3d246de5b38e3d5fb7d7ad64c1055725e4d65dbf66434c3a4aac5fcc4325991b"},
+    "bin/lib/res/servers-jp.json": {"overwrite": false, "hash": "64fd1fd75c658399d215a119c4befcf4e2c04d5232feee921e16a8645b4d9077"},
+    "bin/lib/res/servers-kr.json": {"overwrite": false, "hash": "d7c276eb311ac4121473da0856dfbf111bf713099755636acd3b4ce5431ad9d9"},
+    "bin/lib/res/servers-kr-test.json": {"overwrite": false, "hash": "f76710b4cb400340da9d54011a5035bec5ca05688eead657f4d5d59462abee46"},
+    "bin/lib/res/servers-na.json": {"overwrite": false, "hash": "998df69f41da6a0ea877909ba688831c501b08821fc3ee31ac7c9b038f1f9b2a"},
+    "bin/lib/res/servers-ru.json": {"overwrite": false, "hash": "284ce052b52422ed8e43901fcb94d98ef055d352d23fa5b9dadda87d0bd4d8c9"},
+    "bin/lib/res/servers-tw.json": {"overwrite": false, "hash": "4189efb922b24cb82919209546ce3119ff59ee3c5cac815f17399f3b786a7631"}
   }
 }

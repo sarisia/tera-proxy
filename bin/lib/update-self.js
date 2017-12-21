@@ -29,7 +29,16 @@ async function autoUpdateSelf() {
     let promises = [];
     for(let file in manifest["files"]) {
       let filepath = path.join(__dirname, "..", "..", file);
-      if(!fs.existsSync(filepath) || crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== manifest["files"][file].toUpperCase())
+      let filedata = manifest["files"][file];
+      let needsUpdate = !fs.existsSync(filepath);
+      if(!needsUpdate) {
+        if(typeof filedata === 'object') {
+          needsUpdate = filedata["overwrite"] && (crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== filedata["hash"].toUpperCase());
+        } else {
+          needsUpdate = (crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== filedata.toUpperCase());
+        }
+      }
+      if(needsUpdate)
         promises.push(autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file));
     }
 
