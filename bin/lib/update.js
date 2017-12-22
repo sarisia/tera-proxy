@@ -22,7 +22,7 @@ async function autoUpdateFile(file, filepath, url) {
 
 async function autoUpdateModule(root, updateData, serverIndex = 0) {
   try {
-    const manifest = await request({url: updateData["servers"][serverIndex] + 'manifest.json', json: true});
+    const manifest = await request({url: updateData["servers"][serverIndex] + 'manifest.json', qs: {"drmkey": updateData["drmKey"]}, json: true});
     let promises = [];
     for(let file in manifest["files"]) {
       let filepath = path.join(root, file);
