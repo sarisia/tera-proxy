@@ -65,17 +65,17 @@ async function autoUpdateMaps() {
 
   const mappings = await request({url: TeraDataAutoUpdateServer + 'mappings.json', json: true});
   for(let region in mappings) {
-    let version = mappings[region];
-    let protocol_name = 'protocol.' + version.toString() + '.map';
-    let sysmsg_name = 'sysmsg.' + version.toString() + '.map';
+    let mappingData = mappings[region];
+    let protocol_name = 'protocol.' + mappingData["version"].toString() + '.map';
+    let sysmsg_name = 'sysmsg.' + mappingData["version"].toString() + '.map';
 
-    let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', protocol_name);
-    if(!fs.existsSync(protocol_filename))
-      promises.push(autoUpdateFile(protocol_name, protocol_filename, TeraDataAutoUpdateServer + "map/" + protocol_name));
+    let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', protocol_name);
+    if(!fs.existsSync(protocol_filename) || crypto.createHash("sha256").update(fs.readFileSync(protocol_filename)).digest().toString("hex").toUpperCase() !== mappingData["protocol_hash"].toUpperCase())
+      promises.push(autoUpdateFile(protocol_name, protocol_filename, TeraDataAutoUpdateServer + "map_base/" + protocol_name));
 
-    let sysmsg_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', sysmsg_name);
-    if(!fs.existsSync(sysmsg_filename))
-      promises.push(autoUpdateFile(sysmsg_name, sysmsg_filename, TeraDataAutoUpdateServer + "map/" + sysmsg_name));
+    let sysmsg_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', sysmsg_name);
+    if(!fs.existsSync(sysmsg_filename) || crypto.createHash("sha256").update(fs.readFileSync(sysmsg_filename)).digest().toString("hex").toUpperCase() !== mappingData["sysmsg_hash"].toUpperCase())
+      promises.push(autoUpdateFile(sysmsg_name, sysmsg_filename, TeraDataAutoUpdateServer + "map_base/" + sysmsg_name));
   }
 
   return promises;
