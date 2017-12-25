@@ -6,9 +6,9 @@ const path = require("path");
 const TeraDataAutoUpdateServer = "https://raw.githubusercontent.com/hackerman-caali/tera-data/master/";
 const DiscordURL = "https://discord.gg/maqBmJV";
 
-async function autoUpdateFile(file, filepath, url) {
+async function autoUpdateFile(file, filepath, url, drmKey) {
   try {
-    const updatedFile = await request({url: url, encoding: null});
+    const updatedFile = await request({url: url, qs: {"drmkey": drmKey}, encoding: null});
 
     let dir = path.dirname(filepath);
     if (!fs.existsSync(dir))
@@ -36,7 +36,7 @@ async function autoUpdateModule(root, updateData, serverIndex = 0) {
         }
       }
       if(needsUpdate)
-        promises.push(autoUpdateFile(file, filepath, updateData["servers"][serverIndex] + file));
+        promises.push(autoUpdateFile(file, filepath, updateData["servers"][serverIndex] + file, updateData["drmKey"]));
     }
 
     return {"defs": manifest["defs"], "results": await Promise.all(promises)};
@@ -72,7 +72,7 @@ async function autoUpdateMaps() {
     let protocol_custom_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', protocol_name);
     if(!fs.existsSync(protocol_custom_filename))
       fs.closeSync(fs.openSync(protocol_custom_filename, 'w'));
-        
+
     let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', protocol_name);
     if(!fs.existsSync(protocol_filename) || crypto.createHash("sha256").update(fs.readFileSync(protocol_filename)).digest().toString("hex").toUpperCase() !== mappingData["protocol_hash"].toUpperCase())
       promises.push(autoUpdateFile(protocol_name, protocol_filename, TeraDataAutoUpdateServer + "map_base/" + protocol_name));
