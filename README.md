@@ -15,6 +15,7 @@
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
 * [Command / Chat-Sanitizer / Swim-Fix (Pinkie Pie's default modules)](https://github.com/pinkipi/tera-proxy)
 * [CaaliLogger / CaaliStateTracker](https://github.com/hackerman-caali/data-logger)
+* [Ghillie Auto-Reset](https://github.com/Snugglez/GG-Reset)
 * Bern's scripts
 * Kasea's Ping Remover
 
