@@ -15,11 +15,11 @@
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
 * [Command / Chat-Sanitizer / Swim-Fix (Pinkie Pie's default modules)](https://github.com/pinkipi/tera-proxy)
 * [CaaliLogger / CaaliStateTracker](https://github.com/hackerman-caali/data-logger)
+* Bern's scripts
+* Kasea's Ping Remover
 
 ### Popular modules that are being worked on for compatibility
 * Arborean Apparel
-* Bern's scripts
-* Kasea's Ping Remover
 
 ### Developers: Adding auto-update compatibility to your module
 * You'll need to create two files in your root update directory (called UpdateRoot from now on): `module.json` and `manifest.json`.
