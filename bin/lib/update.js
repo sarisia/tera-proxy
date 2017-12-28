@@ -105,7 +105,6 @@ async function autoUpdate(moduleBase, modules) {
               requiredDefs.add(def + "." + moduleConfig["defs"][def].toString() + ".def");
 
             let failedFiles = [];
-            let errorMessages = [];
             for(let result of moduleConfig["results"]) {
               if(!result[1]) {
                 failedFiles.push(result[0]);
