@@ -14,9 +14,9 @@ async function autoUpdateFile(file, filepath, url, drmKey) {
     if (!fs.existsSync(dir))
       fs.mkdirSync(dir);
     fs.writeFileSync(filepath, updatedFile);
-    return [file, true];
+    return [file, true, ""];
   } catch (e) {
-    return [file, false];
+    return [file, false, e];
   }
 }
 
@@ -105,13 +105,17 @@ async function autoUpdate(moduleBase, modules) {
               requiredDefs.add(def + "." + moduleConfig["defs"][def].toString() + ".def");
 
             let failedFiles = [];
+            let errorMessages = [];
             for(let result of moduleConfig["results"]) {
-              if(!result[1])
+              if(!result[1]) {
                 failedFiles.push(result[0]);
+                failedFiles.push(result[2]);
+              }
             }
+            
 
             if(failedFiles.length > 0)
-              throw "Failed to update the following module files:\n - " + failedFiles.join('\n - ');
+              throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ") + "\n\nError messages:\n - " + errorMessages.join("\n - ");
 
             successModules.push(module);
           } catch(e) {
