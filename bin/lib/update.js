@@ -115,7 +115,7 @@ async function autoUpdate(moduleBase, modules) {
             
 
             if(failedFiles.length > 0)
-              throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ") + "\n\nError messages:\n - " + errorMessages.join("\n - ");
+              throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ");
 
             successModules.push(module);
           } catch(e) {
