@@ -6,13 +6,26 @@ const path = require("path");
 const TeraDataAutoUpdateServer = "https://raw.githubusercontent.com/hackerman-caali/tera-data/master/";
 const DiscordURL = "https://discord.gg/maqBmJV";
 
+function forcedirSync(dir) {
+  const sep = path.sep;
+  const initDir = path.isAbsolute(dir) ? sep : '';
+  dir.split(sep).reduce((parentDir, childDir) => {
+    const curDir = path.resolve(parentDir, childDir);
+    try {
+      fs.mkdirSync(curDir);
+    } catch (err) {
+
+    }
+
+    return curDir;
+  }, initDir);
+}
+
 async function autoUpdateFile(file, filepath, url, drmKey) {
   try {
     const updatedFile = await request({url: url, qs: {"drmkey": drmKey}, encoding: null});
 
-    let dir = path.dirname(filepath);
-    if (!fs.existsSync(dir))
-      fs.mkdirSync(dir);
+    forcedirSync(path.dirname(filepath));
     fs.writeFileSync(filepath, updatedFile);
     return [file, true, ""];
   } catch (e) {
@@ -23,6 +36,9 @@ async function autoUpdateFile(file, filepath, url, drmKey) {
 async function autoUpdateModule(root, updateData, serverIndex = 0) {
   try {
     const manifest = await request({url: updateData["servers"][serverIndex] + 'manifest.json', qs: {"drmkey": updateData["drmKey"]}, json: true});
+    if(typeof manifest !== 'object')
+        throw "Invalid manifest.json!";
+
     let promises = [];
     for(let file in manifest["files"]) {
       let filepath = path.join(root, file);
@@ -111,7 +127,7 @@ async function autoUpdate(moduleBase, modules) {
                 failedFiles.push(result[2]);
               }
             }
-            
+
 
             if(failedFiles.length > 0)
               throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ");
@@ -143,7 +159,7 @@ async function autoUpdate(moduleBase, modules) {
   }
 
   let updatePromises = await autoUpdateDefs(requiredDefs);
-  updatePromises.concat(await autoUpdateMaps());
+  updatePromises = updatePromises.concat(await autoUpdateMaps());
 
   let results = await Promise.all(updatePromises);
   let failedFiles = [];

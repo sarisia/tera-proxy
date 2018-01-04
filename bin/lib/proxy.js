@@ -5,6 +5,8 @@ const currentRegion = REGIONS[REGION];
 if (!currentRegion) {
   console.error("Unsupported region: " + REGION);
   return;
+} else {
+  console.log(`Tera-Proxy configured for region ${REGION}!`);
 }
 
 let why;
@@ -98,6 +100,8 @@ function createServ(target, socket) {
     if(!updateResult["tera-data"])
       console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
 
+    delete require.cache[require.resolve("tera-data-parser")];
+    delete require.cache[require.resolve("tera-proxy-game")];
     const { Connection, RealClient } = require("tera-proxy-game");
 
     const connection = new Connection();
