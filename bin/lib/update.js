@@ -33,11 +33,17 @@ async function autoUpdateFile(file, filepath, url, drmKey) {
   }
 }
 
-async function autoUpdateModule(root, updateData, serverIndex = 0) {
+async function autoUpdateModule(name, root, updateData, updatelog, serverIndex = 0) {
   try {
-    const manifest = await request({url: updateData["servers"][serverIndex] + 'manifest.json', qs: {"drmkey": updateData["drmKey"]}, json: true});
+    const manifest_url = updateData["servers"][serverIndex] + 'manifest.json';
+    if(updatelog) {
+      console.log("[update] Updating module " + name);
+      console.log("[update] - Retrieving update manifest (Server " + serverIndex + ")");
+    }
+
+    const manifest = await request({url: manifest_url, qs: {"drmkey": updateData["drmKey"]}, json: true});
     if(typeof manifest !== 'object')
-        throw "Invalid manifest.json!";
+      throw "Invalid manifest.json!";
 
     let promises = [];
     for(let file in manifest["files"]) {
@@ -51,33 +57,46 @@ async function autoUpdateModule(root, updateData, serverIndex = 0) {
           needsUpdate = (crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== filedata.toUpperCase());
         }
       }
-      if(needsUpdate)
-        promises.push(autoUpdateFile(file, filepath, updateData["servers"][serverIndex] + file, updateData["drmKey"]));
+      if(needsUpdate) {
+        const file_url = updateData["servers"][serverIndex] + file;
+        if(updatelog)
+          console.log("[update] - " + file);
+        promises.push(autoUpdateFile(file, filepath, file_url, updateData["drmKey"]));
+      }
     }
 
     return {"defs": manifest["defs"], "results": await Promise.all(promises)};
   } catch(e) {
     if(serverIndex + 1 < updateData["servers"].length)
-        return autoUpdateModule(root, updateData, serverIndex + 1);
+        return autoUpdateModule(name, root, updateData, updatelog, serverIndex + 1);
     else
         return Promise.reject(e);
   }
 }
 
-async function autoUpdateDefs(requiredDefs) {
+async function autoUpdateDefs(requiredDefs, updatelog) {
   let promises = [];
+
+  if(updatelog)
+    console.log("[update] Updating defs");
 
   for(let def of requiredDefs) {
     let filepath = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'protocol', def);
-    if(!fs.existsSync(filepath))
+    if(!fs.existsSync(filepath)) {
+      if(updatelog)
+        console.log("[update] - " + def);
       promises.push(autoUpdateFile(def, filepath, TeraDataAutoUpdateServer + "protocol/" + def));
+    }
   }
 
   return promises;
 }
 
-async function autoUpdateMaps() {
+async function autoUpdateMaps(updatelog) {
   let promises = [];
+
+  if(updatelog)
+    console.log("[update] Updating maps");
 
   const mappings = await request({url: TeraDataAutoUpdateServer + 'mappings.json', json: true});
   for(let region in mappings) {
@@ -90,18 +109,24 @@ async function autoUpdateMaps() {
       fs.closeSync(fs.openSync(protocol_custom_filename, 'w'));
 
     let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', protocol_name);
-    if(!fs.existsSync(protocol_filename) || crypto.createHash("sha256").update(fs.readFileSync(protocol_filename)).digest().toString("hex").toUpperCase() !== mappingData["protocol_hash"].toUpperCase())
+    if(!fs.existsSync(protocol_filename) || crypto.createHash("sha256").update(fs.readFileSync(protocol_filename)).digest().toString("hex").toUpperCase() !== mappingData["protocol_hash"].toUpperCase()) {
+      if(updatelog)
+        console.log("[update] - " + protocol_name);
       promises.push(autoUpdateFile(protocol_name, protocol_filename, TeraDataAutoUpdateServer + "map_base/" + protocol_name));
+    }
 
     let sysmsg_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', sysmsg_name);
-    if(!fs.existsSync(sysmsg_filename) || crypto.createHash("sha256").update(fs.readFileSync(sysmsg_filename)).digest().toString("hex").toUpperCase() !== mappingData["sysmsg_hash"].toUpperCase())
+    if(!fs.existsSync(sysmsg_filename) || crypto.createHash("sha256").update(fs.readFileSync(sysmsg_filename)).digest().toString("hex").toUpperCase() !== mappingData["sysmsg_hash"].toUpperCase()) {
+      if(updatelog)
+        console.log("[update] - " + sysmsg_name);
       promises.push(autoUpdateFile(sysmsg_name, sysmsg_filename, TeraDataAutoUpdateServer + "map_base/" + sysmsg_name));
+    }
   }
 
   return promises;
 }
 
-async function autoUpdate(moduleBase, modules) {
+async function autoUpdate(moduleBase, modules, updatelog) {
   console.log("[update] Auto-update started!");
   let requiredDefs = new Set(["C_CHECK_VERSION.1.def"]);
 
@@ -116,7 +141,7 @@ async function autoUpdate(moduleBase, modules) {
         try {
           updateData = JSON.parse(updateData);
           try {
-            const moduleConfig = await autoUpdateModule(root, updateData);
+            const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog);
             for(let def in moduleConfig["defs"])
               requiredDefs.add(def + "." + moduleConfig["defs"][def].toString() + ".def");
 
@@ -158,8 +183,8 @@ async function autoUpdate(moduleBase, modules) {
     }
   }
 
-  let updatePromises = await autoUpdateDefs(requiredDefs);
-  updatePromises = updatePromises.concat(await autoUpdateMaps());
+  let updatePromises = await autoUpdateDefs(requiredDefs, updatelog);
+  updatePromises = updatePromises.concat(await autoUpdateMaps(updatelog));
 
   let results = await Promise.all(updatePromises);
   let failedFiles = [];
