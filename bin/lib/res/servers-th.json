@@ -1,13 +1,13 @@
 {
 	"1": {
 		"name": "Karas",
-		"ip": "103.80.216.173",
+		"ip": "127.0.0.28",
 		"port": 7801,
 		"keepOriginal": true
 	},
 	"2": {
 		"name": "Zuras",
-		"ip": "103.80.216.174",
+		"ip": "127.0.0.28",
 		"port": 7801,
 		"keepOriginal": true
 	}
