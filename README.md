@@ -10,9 +10,10 @@
 * Run `TeraProxy.bat` *as Administrator*, then start the game
 
 ### Popular modules that are currently compatible
-* [Skill Prediction (SaltyMonkey's Fork)](https://github.com/SaltyMonkey/skill-prediction)
+* [Skill Prediction (SaltyMonkey's fork)](https://github.com/SaltyMonkey/skill-prediction)
 * [FPS Utils](https://github.com/hugedong69/fps-utils)
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
+* [Instant Enchant (beng's fork)](https://github.com/beng-mods/instant-enchant)
 * [Command / Chat-Sanitizer / Swim-Fix (Pinkie Pie's default modules)](https://github.com/pinkipi/tera-proxy)
 * [CaaliLogger / CaaliStateTracker](https://github.com/hackerman-caali/data-logger)
 * [Ghillie Auto-Reset](https://github.com/Snugglez/GG-Reset)
