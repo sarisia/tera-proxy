@@ -74,7 +74,7 @@ function listenHandler(err) {
     else if (code === "EACCES") {
       let port = currentRegion.port;
       console.error("ERROR: Another process is already using port " + port + ".\nPlease close or uninstall the application first:");
-      return require("./netstat")();
+      return require("./netstat")(port);
     }
     throw err;
   }
