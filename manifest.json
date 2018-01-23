@@ -4,7 +4,7 @@
     "bin/lib/netstat.js": "2b7b5c825c82833403684545fc9b9cfc57cb878fa782bbde860805984119b6cb",
     "bin/lib/proxy.js": "36013a3a66f9f09e7371a47baaf063e42ccf24ee40a33a431088b3002e12a0f6",
     "bin/lib/regions.js": "763d48f3c102a7a2ea3e9f689c0d53636874b7c7c8e5a8d7afdb62c3471c3e84",
-    "bin/lib/update.js": "4046b15eeb4a2d99a85a4fcd44b93867cda182804699d49b4dbc3f8abfd05a13",
+    "bin/lib/update.js": "f0002788c08f8c2c4df3334669ae34513102a8afcb8e78d8355656980524c5f5",
     "bin/lib/update-self.js": "90f8f5ac582dbf77f9e1b90bb22b2aa7c47f977047b78b93481dac463d01d5f2",
     "bin/lib/res/servers-eu.json": {"overwrite": false, "hash": "2478cc8f3c4298cddb6b62efe860a096b82dcf8d8b4e3ebc63b5e92fd8aabfbd"},
     "bin/lib/res/servers-eu-test.json": {"overwrite": false, "hash": "3d246de5b38e3d5fb7d7ad64c1055725e4d65dbf66434c3a4aac5fcc4325991b"},
@@ -14,6 +14,6 @@
     "bin/lib/res/servers-na.json": {"overwrite": false, "hash": "998df69f41da6a0ea877909ba688831c501b08821fc3ee31ac7c9b038f1f9b2a"},
     "bin/lib/res/servers-ru.json": {"overwrite": false, "hash": "284ce052b52422ed8e43901fcb94d98ef055d352d23fa5b9dadda87d0bd4d8c9"},
     "bin/lib/res/servers-tw.json": {"overwrite": false, "hash": "4189efb922b24cb82919209546ce3119ff59ee3c5cac815f17399f3b786a7631"},
-    "bin/lib/res/servers-th.json": {"overwrite": true, "hash": "659487d799c4f5255a683fefbbe2a1429563861ca90529e9010d82f15b0a44cd"}
+    "bin/lib/res/servers-th.json": {"overwrite": false, "hash": "659487d799c4f5255a683fefbbe2a1429563861ca90529e9010d82f15b0a44cd"}
   }
 }

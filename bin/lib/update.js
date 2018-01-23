@@ -74,6 +74,18 @@ async function autoUpdateModule(name, root, updateData, updatelog, serverIndex =
   }
 }
 
+async function autoUpdateDef(def, filepath, filepath_pc, filepath_con) {
+  // First try platform-agnostic version
+  let res = await autoUpdateFile(def, filepath, TeraDataAutoUpdateServer + "protocol/" + def);
+  if (res[1])
+    return res;
+
+  // Then try platform-specific versions
+  let res_pc = await autoUpdateFile(def, filepath_pc, TeraDataAutoUpdateServer + "protocol/" + def.replace('.def', '.pc.def'));
+  let res_con = await autoUpdateFile(def, filepath_con, TeraDataAutoUpdateServer + "protocol/" + def.replace('.def', '.con.def'));
+  return [def, res_pc[1] && res_con[1], !res_pc[1] ? res_pc[2] : (!res_con[1] ? res_con[2] : "")];
+}
+
 async function autoUpdateDefs(requiredDefs, updatelog) {
   let promises = [];
 
@@ -83,9 +95,15 @@ async function autoUpdateDefs(requiredDefs, updatelog) {
   for(let def of requiredDefs) {
     let filepath = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'protocol', def);
     if(!fs.existsSync(filepath)) {
-      if(updatelog)
-        console.log("[update] - " + def);
-      promises.push(autoUpdateFile(def, filepath, TeraDataAutoUpdateServer + "protocol/" + def));
+      let filepath_pc = filepath.replace('.def', '.pc.def');
+      let filepath_con = filepath.replace('.def', '.con.def');
+
+      if(!fs.existsSync(filepath_pc) || !fs.existsSync(filepath_con))
+      {
+        if(updatelog)
+          console.log("[update] - " + def);
+        promises.push(autoUpdateDef(def, filepath, filepath_pc, filepath_con));
+      }
     }
   }
 
