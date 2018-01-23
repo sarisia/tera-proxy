@@ -14,6 +14,17 @@
     "bin/lib/res/servers-na.json": {"overwrite": false, "hash": "998df69f41da6a0ea877909ba688831c501b08821fc3ee31ac7c9b038f1f9b2a"},
     "bin/lib/res/servers-ru.json": {"overwrite": false, "hash": "284ce052b52422ed8e43901fcb94d98ef055d352d23fa5b9dadda87d0bd4d8c9"},
     "bin/lib/res/servers-tw.json": {"overwrite": false, "hash": "4189efb922b24cb82919209546ce3119ff59ee3c5cac815f17399f3b786a7631"},
-    "bin/lib/res/servers-th.json": {"overwrite": false, "hash": "659487d799c4f5255a683fefbbe2a1429563861ca90529e9010d82f15b0a44cd"}
+    "bin/lib/res/servers-th.json": {"overwrite": false, "hash": "659487d799c4f5255a683fefbbe2a1429563861ca90529e9010d82f15b0a44cd"},
+    "node_modules/tera-data-parser/lib/parsers/def.js": "090de37b0fc6773104d5e4d3980745b96ca2b65820eb3c15ea5cd83e385fa324",
+    "node_modules/tera-data-parser/lib/protocol/index.js": "a333581b29c3802157b7e3e84cf7df85aa8bac9ec2edfe03e804768ae8904cf4",
+    "node_modules/tera-proxy-game/lib/clients/RealClient.js": "16904f01f2445799d026b5253f6a97cef85d76dbebd99a2ca5440f534ed0a4fd",
+    "node_modules/tera-proxy-game/lib/connection/index.js": "307ce8919dd65c2d24ff72f5a6fb699575cf9bd913e8f2d0a0ce3e11578d749b",
+    "node_modules/tera-proxy-game/lib/connection/dispatch/index.js": "9d0bc0921996931a8afd6561f6611e9b2c693ef8693af2b7b008d9c45043e17f",
+    "node_modules/tera-proxy-game/lib/connection/encryption/index.js": "804a3d496bc9053c708e5649dd9cdc1495b47b460275c3d37c380dd2f8f69c00",
+    "node_modules/tera-proxy-game/package.json": "e88713e963d3bb8c96e37220c34794d40d366bc330023f5926888c2d3f622560",
+    "node_modules/tera-crypto-js/index.js": "03f623e76cea70ab9466730d9f502ea55d5a47004243db620ef7ec5d63e5a154",
+    "node_modules/tera-crypto-native/binding.gyp": "fd0ffa3febdf65d280a92c96572852386f84666c48809a4426edcb5ec7023efd",
+    "node_modules/tera-crypto-native/package.json": "4bffada3eddec0dc5e9b3f48032f98143ddf365df48563382653652837d19c4f",
+    "node_modules/tera-crypto-native/tera-crypto-native.node": "be1224c10e8308c5523d41ceee24dfc68d805db80ce6b4bceaea63b6e0932dd6",
   }
 }
