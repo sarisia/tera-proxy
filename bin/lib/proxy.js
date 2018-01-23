@@ -7,6 +7,10 @@ if (!currentRegion) {
   return;
 } else {
   console.log(`[sls] Tera-Proxy configured for region ${REGION}!`);
+
+  // TODO: make auto-updater remove this from servers-eu.json
+  if (REGION == "EU" && currentRegion.customServers["33"] && currentRegion.customServers["33"].name == "(INT) - Manahan (Proxy)")
+    delete currentRegion.customServers["33"];
 }
 
 let why;
@@ -85,6 +89,7 @@ function listenHandler(err) {
   for (let i = servers.entries(), step; !(step = i.next()).done; ) {
     const [id, server] = step.value;
     const currentCustomServer = customServers[id];
+
     server.listen(currentCustomServer.port, currentCustomServer.ip || "127.0.0.1", customServerCallback.bind(null, server));
   }
 }

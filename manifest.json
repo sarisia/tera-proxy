@@ -2,7 +2,7 @@
   "files": {
     "bin/lib/hosts.js": "e554c3d2593be08afc60f3db74ca96644c7b267e12d546cfbf5ef61c965da99a",
     "bin/lib/netstat.js": "2b7b5c825c82833403684545fc9b9cfc57cb878fa782bbde860805984119b6cb",
-    "bin/lib/proxy.js": "36013a3a66f9f09e7371a47baaf063e42ccf24ee40a33a431088b3002e12a0f6",
+    "bin/lib/proxy.js": "3b9024b1a03644ef91535ef76c341e09fdf869a795e83eec82d76a11ce7e00f7",
     "bin/lib/regions.js": "763d48f3c102a7a2ea3e9f689c0d53636874b7c7c8e5a8d7afdb62c3471c3e84",
     "bin/lib/update.js": "f0002788c08f8c2c4df3334669ae34513102a8afcb8e78d8355656980524c5f5",
     "bin/lib/update-self.js": "90f8f5ac582dbf77f9e1b90bb22b2aa7c47f977047b78b93481dac463d01d5f2",
