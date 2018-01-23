@@ -25,6 +25,6 @@
     "node_modules/tera-crypto-js/index.js": "03f623e76cea70ab9466730d9f502ea55d5a47004243db620ef7ec5d63e5a154",
     "node_modules/tera-crypto-native/binding.gyp": "fd0ffa3febdf65d280a92c96572852386f84666c48809a4426edcb5ec7023efd",
     "node_modules/tera-crypto-native/package.json": "4bffada3eddec0dc5e9b3f48032f98143ddf365df48563382653652837d19c4f",
-    "node_modules/tera-crypto-native/tera-crypto-native.node": "be1224c10e8308c5523d41ceee24dfc68d805db80ce6b4bceaea63b6e0932dd6",
+    "node_modules/tera-crypto-native/tera-crypto-native.node": "be1224c10e8308c5523d41ceee24dfc68d805db80ce6b4bceaea63b6e0932dd6"
   }
 }
