@@ -16,6 +16,7 @@
 * [True Everful Nostrum (my fork)](https://github.com/hackerman-caali/true-everful-nostrum)
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
 * [Instant Enchant (my fork)](https://github.com/hackerman-caali/instant-enchant)
+* [Socialize](https://github.com/Leyki/Socialize/)
 * [Settings Saver](https://github.com/Kaseaa/Tera-Settings-Saver)
 * [Command / Chat-Sanitizer / Swim-Fix (Pinkie Pie's default modules)](https://github.com/pinkipi/tera-proxy)
 * [CaaliLogger / CaaliStateTracker](https://github.com/hackerman-caali/data-logger)
