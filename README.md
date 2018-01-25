@@ -12,16 +12,16 @@
 ### Popular modules that are currently compatible
 * [Skill Prediction (SaltyMonkey's fork)](https://github.com/SaltyMonkey/skill-prediction)
 * [FPS Utils](https://github.com/hugedong69/fps-utils)
+* [Arborean Apparel](https://github.com/hugedong69/arborean-apparel)
+* [True Everful Nostrum (my fork)](https://github.com/hackerman-caali/true-everful-nostrum)
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
-* [Instant Enchant (beng's fork)](https://github.com/beng-mods/instant-enchant)
+* [Instant Enchant (my fork)](https://github.com/hackerman-caali/instant-enchant)
+* [Settings Saver](https://github.com/Kaseaa/Tera-Settings-Saver)
 * [Command / Chat-Sanitizer / Swim-Fix (Pinkie Pie's default modules)](https://github.com/pinkipi/tera-proxy)
 * [CaaliLogger / CaaliStateTracker](https://github.com/hackerman-caali/data-logger)
 * [Ghillie Auto-Reset](https://github.com/Snugglez/GG-Reset)
 * Bern's scripts
 * Kasea's Ping Remover
-
-### Popular modules that are being worked on for compatibility
-* Arborean Apparel
 
 ### Developers: Adding auto-update compatibility to your module
 * You'll need to create two files in your root update directory (called UpdateRoot from now on): `module.json` and `manifest.json`.
