@@ -1,4 +1,8 @@
-const request = require('request-promise-native');
+let request = null;
+try {
+  request = require('request-promise-native');
+} catch(_) { }
+
 const crypto = require('crypto');
 const fs = require("fs");
 const path = require("path");
@@ -21,6 +25,12 @@ async function autoUpdateFile(file, filepath, url) {
 }
 
 async function autoUpdateSelf() {
+  if(!request) {
+    console.error("ERROR: It looks like you've downloaded my proxy directly from GitHub without properly installing required dependencies!");
+    console.error("ERROR: Please join %s and download the prepackaged release version from the #proxy channel!", DiscordURL);
+    return Promise.reject("Request not installed");
+  }
+  
   try {
     const manifest = await request({url: TeraProxyAutoUpdateServer + 'manifest.json', json: true});
     if(!manifest["files"])
