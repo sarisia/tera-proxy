@@ -123,8 +123,10 @@ async function autoUpdateMaps(updatelog) {
     let sysmsg_name = 'sysmsg.' + mappingData["version"].toString() + '.map';
 
     let protocol_custom_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map', protocol_name);
-    if(!fs.existsSync(protocol_custom_filename))
+    if(!fs.existsSync(protocol_custom_filename)) {
+      forcedirSync(path.dirname(protocol_custom_filename));
       fs.closeSync(fs.openSync(protocol_custom_filename, 'w'));
+    }
 
     let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', protocol_name);
     if(!fs.existsSync(protocol_filename) || crypto.createHash("sha256").update(fs.readFileSync(protocol_filename)).digest().toString("hex").toUpperCase() !== mappingData["protocol_hash"].toUpperCase()) {
