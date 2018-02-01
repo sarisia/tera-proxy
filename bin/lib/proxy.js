@@ -1,4 +1,14 @@
-const { region: REGION, updatelog: UPDATE_LOG, updateat: UPDATE_AT } = require("../config.json");
+const DiscordURL = "https://discord.gg/maqBmJV";
+const {region: REGION, updatelog: UPDATE_LOG, updateat: UPDATE_AT} = (() => {
+    try { 
+        return require("../config.json")
+    } catch(_) {
+        console.log("ERROR: Whoops, looks like you've fucked up your config.json!");
+        console.log("ERROR: Try to fix it yourself or ask in the #help channel of %s!", DiscordURL);
+        process.exit(1);
+    }
+})();
+
 const REGIONS = require("./regions");
 const currentRegion = REGIONS[REGION];
 
