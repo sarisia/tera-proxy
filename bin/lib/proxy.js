@@ -63,7 +63,10 @@ function populateModulesList() {
   modules = [];
   for (let i = 0, k = -1, arr = fs.readdirSync(moduleBase), len = arr.length; i < len; ++i) {
     const name = arr[i];
-    if (name[0] === "." || name[0] === "_") continue;
+    if (name[0] === "." || name[0] === "_")
+      continue;
+    if (!name.endsWith(".js") && !fs.lstatSync(path.join(moduleBase, name)).isDirectory())
+      continue;
     modules[++k] = name;
   }
 }
