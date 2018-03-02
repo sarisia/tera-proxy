@@ -162,8 +162,15 @@ async function autoUpdate(moduleBase, modules, updatelog) {
           updateData = JSON.parse(updateData);
           try {
             const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog);
-            for(let def in moduleConfig["defs"])
-              requiredDefs.add(def + "." + moduleConfig["defs"][def].toString() + ".def");
+            for(let def in moduleConfig["defs"]) {
+              let def_data = moduleConfig["defs"][def];
+              if(typeof def_data === 'object') {
+                for(let def_ver of def_data)
+                  requiredDefs.add(def + "." + def_ver.toString() + ".def");
+              } else {
+                requiredDefs.add(def + "." + def_data.toString() + ".def");
+              }
+            }
 
             let failedFiles = [];
             for(let result of moduleConfig["results"]) {
