@@ -30,6 +30,6 @@
     "node_modules/tera-crypto-native/package.json": "4bffada3eddec0dc5e9b3f48032f98143ddf365df48563382653652837d19c4f",
     "node_modules/tera-crypto-native/tera-crypto-native.node": "be1224c10e8308c5523d41ceee24dfc68d805db80ce6b4bceaea63b6e0932dd6",
     "node_modules/tera-vec3/package.json": "e09354b1fe9ee1f67fa072a787e058f02e29ed5006c792fc33d6f39cced2ae74",
-    "node_modules/tera-vec3/index.js": "77b3bbbdee1ec357edeb6db634aee8d07f32824e16694b7e7235bb70a19f244e"
+    "node_modules/tera-vec3/index.js": "10788f5844be3c396b6a3b7ef783d4c69229ffa9944025ff90413a948725bd4a"
   }
 }
