@@ -112,6 +112,7 @@ async function autoUpdateDefs(requiredDefs, updatelog) {
 
 async function autoUpdateMaps(updatelog) {
   let promises = [];
+  let major_patch_versions = {};
 
   if(updatelog)
     console.log("[update] Updating maps");
@@ -119,6 +120,7 @@ async function autoUpdateMaps(updatelog) {
   const mappings = await request({url: TeraDataAutoUpdateServer + 'mappings.json', json: true});
   for(let region in mappings) {
     let mappingData = mappings[region];
+    major_patch_versions[mappingData['version']] = mappingData['major_patch'];
     let protocol_name = 'protocol.' + mappingData["version"].toString() + '.map';
     let sysmsg_name = 'sysmsg.' + mappingData["version"].toString() + '.map';
 
@@ -143,7 +145,7 @@ async function autoUpdateMaps(updatelog) {
     }
   }
 
-  return promises;
+  return [major_patch_versions, promises];
 }
 
 async function autoUpdate(moduleBase, modules, updatelog) {
@@ -211,7 +213,8 @@ async function autoUpdate(moduleBase, modules, updatelog) {
   }
 
   let updatePromises = await autoUpdateDefs(requiredDefs, updatelog);
-  updatePromises = updatePromises.concat(await autoUpdateMaps(updatelog));
+  let mapResults = await autoUpdateMaps(updatelog);
+  updatePromises = updatePromises.concat(mapResults[1]);
 
   let results = await Promise.all(updatePromises);
   let failedFiles = [];
@@ -224,7 +227,7 @@ async function autoUpdate(moduleBase, modules, updatelog) {
     console.error("ERROR: Unable to update the following def/map files. Please join %s and report this error in the #help channel!\n - %s", DiscordURL, failedFiles.join('\n - '));
 
   console.log("[update] Auto-update complete!");
-  return {"tera-data": (failedFiles.length == 0), "updated": successModules, "legacy": legacyModules, "failed": failedModules};
+  return {"tera-data": (failedFiles.length == 0), "major_patch_versions": mapResults[0], "updated": successModules, "legacy": legacyModules, "failed": failedModules};
 }
 
 module.exports = autoUpdate;

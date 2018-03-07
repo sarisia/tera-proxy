@@ -1,6 +1,6 @@
 const DiscordURL = "https://discord.gg/maqBmJV";
 const {region: REGION, updatelog: UPDATE_LOG, updateat: UPDATE_AT} = (() => {
-    try { 
+    try {
         return require("../config.json")
     } catch(_) {
         console.log("ERROR: Whoops, looks like you've fucked up your config.json!");
@@ -107,12 +107,15 @@ function listenHandler(err) {
   }
 }
 
-let lastUpdateResult = {"failed": [], "legacy": [], "updated": []};
+let lastUpdateResult = {"major_patch_versions": {}, "failed": [], "legacy": [], "updated": []};
 
 function runServ(target, socket) {
   const { Connection, RealClient } = require("tera-proxy-game");
 
-  const connection = new Connection();
+  const connection = new Connection({
+    "console": false,
+    "majorPatchVersions": lastUpdateResult["major_patch_versions"],
+  });
   const client = new RealClient(connection, socket);
   const srvConn = connection.connect(client, {
     host: target.ip,
