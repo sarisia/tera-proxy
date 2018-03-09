@@ -66,5 +66,21 @@ module.exports = {
     port: 80,
     customServers: require('./res/servers-kr-test.json'),
     listenHostname: "127.0.0.17"
+  },
+  "PS4-NA": {
+    console: true,
+    customServers: require('./res/servers-ps4-na.json')
+  },
+  "PS4-EU": {
+    console: true,
+    customServers: require('./res/servers-ps4-eu.json')
+  },
+  "XBONE-NA": {
+    console: true,
+    customServers: require('./res/servers-xbone-na.json')
+  },
+  "XBONE-EU": {
+    console: true,
+    customServers: require('./res/servers-xbone-eu.json')
   }
 };

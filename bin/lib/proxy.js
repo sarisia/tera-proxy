@@ -11,6 +11,8 @@ const {region: REGION, updatelog: UPDATE_LOG, updateat: UPDATE_AT} = (() => {
 
 const REGIONS = require("./regions");
 const currentRegion = REGIONS[REGION];
+const isConsole = currentRegion["console"];
+const { customServers, listenHostname, hostname } = currentRegion;
 
 if (!currentRegion) {
   console.error("Unsupported region: " + REGION);
@@ -32,28 +34,29 @@ const net = require("net");
 const path = require("path");
 const dns = require("dns");
 const hosts = require("./hosts");
-const { customServers, listenHostname, hostname } = currentRegion;
 
-try { hosts.remove(listenHostname, hostname); }
-catch (e) {
-  switch (e.code) {
-   case "EACCES":
-    console.error(`ERROR: Hosts file is set to read-only.
-
-* Make sure no anti-virus software is running.
-* Locate "${e.path}", right click the file, click 'Properties', uncheck 'Read-only' then click 'OK'.`);
-    break;
-   case "EPERM":
-    console.error(`ERROR: Insufficient permission to modify hosts file.
-
-* Make sure no anti-virus software is running.
-* Right click TeraProxy.bat and select 'Run as administrator'.`);
-    break;
-   default:
-    throw e;
+if (!isConsole) {  
+  try { hosts.remove(listenHostname, hostname); }
+  catch (e) {
+    switch (e.code) {
+     case "EACCES":
+      console.error(`ERROR: Hosts file is set to read-only.
+  
+  * Make sure no anti-virus software is running.
+  * Locate "${e.path}", right click the file, click 'Properties', uncheck 'Read-only' then click 'OK'.`);
+      break;
+     case "EPERM":
+      console.error(`ERROR: Insufficient permission to modify hosts file.
+  
+  * Make sure no anti-virus software is running.
+  * Right click TeraProxy.bat and select 'Run as administrator'.`);
+      break;
+     default:
+      throw e;
+    }
+  
+    process.exit(1);
   }
-
-  process.exit(1);
 }
 
 const moduleBase = path.join(__dirname, "..", "node_modules");
@@ -71,10 +74,8 @@ function populateModulesList() {
   }
 }
 
-const SlsProxy = require("tera-proxy-sls");
 
 const servers = new Map();
-const proxy = new SlsProxy(currentRegion);
 
 function customServerCallback(server) {
   const { address, port } = server.address();
@@ -113,7 +114,7 @@ function runServ(target, socket) {
   const { Connection, RealClient } = require("tera-proxy-game");
 
   const connection = new Connection({
-    "console": false,
+    "console": isConsole,
     "majorPatchVersions": lastUpdateResult["major_patch_versions"],
   });
   const client = new RealClient(connection, socket);
@@ -179,25 +180,40 @@ function createServ(target, socket) {
   }
 }
 
+const SlsProxy = require("tera-proxy-sls");
+const proxy = new SlsProxy(currentRegion);
+  
 function startProxy() {
-  dns.setServers(["8.8.8.8", "8.8.4.4"]);
-
-  proxy.fetch((err, gameServers) => {
-    if (err) throw err;
-
+  if(!isConsole) {
+    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+    
+    proxy.fetch((err, gameServers) => {
+      if (err) throw err;
+    
+      for (let i = 0, arr = Object.keys(customServers), len = arr.length; i < len; ++i) {
+        const id = arr[i];
+        const target = gameServers[id];
+        if (!target) {
+          console.error(`server ${id} not found`);
+          continue;
+        }
+    
+        const server = net.createServer(createServ.bind(null, target));
+        servers.set(id, server);
+      }
+      proxy.listen(listenHostname, listenHandler);
+    });
+  } else {
     for (let i = 0, arr = Object.keys(customServers), len = arr.length; i < len; ++i) {
       const id = arr[i];
-      const target = gameServers[id];
-      if (!target) {
-        console.error(`server ${id} not found`);
-        continue;
-      }
-
+      const target = customServers[id]["remote"];
+  
       const server = net.createServer(createServ.bind(null, target));
       servers.set(id, server);
     }
-    proxy.listen(listenHostname, listenHandler);
-  });
+    
+    listenHandler();
+  }
 }
 
 if(UPDATE_AT === "startup") {
@@ -223,10 +239,13 @@ const isWindows = process.platform === "win32";
 function cleanExit() {
   console.log("terminating...");
 
-  try { hosts.remove(listenHostname, hostname); }
-  catch (_) {}
-
-  proxy.close();
+  if(!isConsole) {
+    try { hosts.remove(listenHostname, hostname); }
+    catch (_) {}
+    
+    proxy.close();
+  }
+  
   for (let i = servers.values(), step; !(step = i.next()).done; )
     step.value.close();
 
