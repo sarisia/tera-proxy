@@ -162,7 +162,7 @@ function createServ(target, socket) {
 
   populateModulesList();
 
-  if(UPDATE_AT === undefined || UPDATE_AT === "login") {
+  if(UPDATE_AT === "login") {
     autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
       if(!updateResult["tera-data"])
         console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
@@ -216,7 +216,7 @@ function startProxy() {
   }
 }
 
-if(UPDATE_AT === "startup") {
+if(!UPDATE_AT || UPDATE_AT === "startup") {
   populateModulesList();
   autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
     if(!updateResult["tera-data"])
