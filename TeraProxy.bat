@@ -3,7 +3,7 @@
 
 WHERE node > NUL 2> NUL
 IF %ERRORLEVEL% NEQ 0 (
-  ECHO Node.js is not installed. Please go to https://nodejs.org/ and install the latest stable version.
+  ECHO Node.js is not installed. Please go to the #proxy channel of https://discord.gg/maqBmJV and follow the installation guide.
   PAUSE
 ) ELSE (
   START cmd.exe /k "node index.js"
