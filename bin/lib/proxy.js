@@ -1,5 +1,5 @@
 const DiscordURL = "https://discord.gg/maqBmJV";
-const {region: REGION, updatelog: UPDATE_LOG, updateat: UPDATE_AT} = (() => {
+const {region: REGION, updatelog: UPDATE_LOG, updateat: UPDATE_AT, updatelimit: UPDATE_LIMIT} = (() => {
     try {
         return require("../config.json")
     } catch(_) {
@@ -35,26 +35,26 @@ const path = require("path");
 const dns = require("dns");
 const hosts = require("./hosts");
 
-if (!isConsole) {  
+if (!isConsole) {
   try { hosts.remove(listenHostname, hostname); }
   catch (e) {
     switch (e.code) {
      case "EACCES":
       console.error(`ERROR: Hosts file is set to read-only.
-  
+
   * Make sure no anti-virus software is running.
   * Locate "${e.path}", right click the file, click 'Properties', uncheck 'Read-only' then click 'OK'.`);
       break;
      case "EPERM":
       console.error(`ERROR: Insufficient permission to modify hosts file.
-  
+
   * Make sure no anti-virus software is running.
   * Right click TeraProxy.bat and select 'Run as administrator'.`);
       break;
      default:
       throw e;
     }
-  
+
     process.exit(1);
   }
 }
@@ -163,7 +163,7 @@ function createServ(target, socket) {
   populateModulesList();
 
   if(UPDATE_AT === undefined || UPDATE_AT === "login") {
-    autoUpdate(moduleBase, modules, UPDATE_LOG).then((updateResult) => {
+    autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
       if(!updateResult["tera-data"])
         console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
 
@@ -182,14 +182,14 @@ function createServ(target, socket) {
 
 const SlsProxy = require("tera-proxy-sls");
 const proxy = new SlsProxy(currentRegion);
-  
+
 function startProxy() {
   if(!isConsole) {
     dns.setServers(["8.8.8.8", "8.8.4.4"]);
-    
+
     proxy.fetch((err, gameServers) => {
       if (err) throw err;
-    
+
       for (let i = 0, arr = Object.keys(customServers), len = arr.length; i < len; ++i) {
         const id = arr[i];
         const target = gameServers[id];
@@ -197,7 +197,7 @@ function startProxy() {
           console.error(`server ${id} not found`);
           continue;
         }
-    
+
         const server = net.createServer(createServ.bind(null, target));
         servers.set(id, server);
       }
@@ -207,18 +207,18 @@ function startProxy() {
     for (let i = 0, arr = Object.keys(customServers), len = arr.length; i < len; ++i) {
       const id = arr[i];
       const target = customServers[id]["remote"];
-  
+
       const server = net.createServer(createServ.bind(null, target));
       servers.set(id, server);
     }
-    
+
     listenHandler();
   }
 }
 
 if(UPDATE_AT === "startup") {
   populateModulesList();
-  autoUpdate(moduleBase, modules, UPDATE_LOG).then((updateResult) => {
+  autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
     if(!updateResult["tera-data"])
       console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
 
@@ -242,10 +242,10 @@ function cleanExit() {
   if(!isConsole) {
     try { hosts.remove(listenHostname, hostname); }
     catch (_) {}
-    
+
     proxy.close();
   }
-  
+
   for (let i = servers.values(), step; !(step = i.next()).done; )
     step.value.close();
 

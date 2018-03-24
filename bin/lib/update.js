@@ -33,7 +33,7 @@ async function autoUpdateFile(file, filepath, url, drmKey) {
   }
 }
 
-async function autoUpdateModule(name, root, updateData, updatelog, serverIndex = 0) {
+async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, serverIndex = 0) {
   try {
     const manifest_url = updateData["servers"][serverIndex] + 'manifest.json';
     if(updatelog) {
@@ -61,14 +61,16 @@ async function autoUpdateModule(name, root, updateData, updatelog, serverIndex =
         const file_url = updateData["servers"][serverIndex] + file;
         if(updatelog)
           console.log("[update] - " + file);
-        promises.push(autoUpdateFile(file, filepath, file_url, updateData["drmKey"]));
+
+        let promise = autoUpdateFile(file, filepath, file_url, updateData["drmKey"]);
+        promises.push(updatelimit ? (await promise) : promise);
       }
     }
 
-    return {"defs": manifest["defs"], "results": await Promise.all(promises)};
+    return {"defs": manifest["defs"], "results": updatelimit ? promises : (await Promise.all(promises))};
   } catch(e) {
     if(serverIndex + 1 < updateData["servers"].length)
-        return autoUpdateModule(name, root, updateData, updatelog, serverIndex + 1);
+        return autoUpdateModule(name, root, updateData, updatelog, updatelimit, serverIndex + 1);
     else
         return Promise.reject(e);
   }
@@ -86,7 +88,7 @@ async function autoUpdateDef(def, filepath, filepath_pc, filepath_con) {
   return [def, res_pc[1] && res_con[1], !res_pc[1] ? res_pc[2] : (!res_con[1] ? res_con[2] : "")];
 }
 
-async function autoUpdateDefs(requiredDefs, updatelog) {
+async function autoUpdateDefs(requiredDefs, updatelog, updatelimit) {
   let promises = [];
 
   if(updatelog)
@@ -102,7 +104,9 @@ async function autoUpdateDefs(requiredDefs, updatelog) {
       {
         if(updatelog)
           console.log("[update] - " + def);
-        promises.push(autoUpdateDef(def, filepath, filepath_pc, filepath_con));
+
+        let promise = autoUpdateDef(def, filepath, filepath_pc, filepath_con);
+        promises.push(updatelimit ? (await promise) : promise);
       }
     }
   }
@@ -110,7 +114,7 @@ async function autoUpdateDefs(requiredDefs, updatelog) {
   return promises;
 }
 
-async function autoUpdateMaps(updatelog) {
+async function autoUpdateMaps(updatelog, updatelimit) {
   let promises = [];
   let major_patch_versions = {};
 
@@ -134,21 +138,25 @@ async function autoUpdateMaps(updatelog) {
     if(!fs.existsSync(protocol_filename) || crypto.createHash("sha256").update(fs.readFileSync(protocol_filename)).digest().toString("hex").toUpperCase() !== mappingData["protocol_hash"].toUpperCase()) {
       if(updatelog)
         console.log("[update] - " + protocol_name);
-      promises.push(autoUpdateFile(protocol_name, protocol_filename, TeraDataAutoUpdateServer + "map_base/" + protocol_name));
+
+      let promise = autoUpdateFile(protocol_name, protocol_filename, TeraDataAutoUpdateServer + "map_base/" + protocol_name);
+      promises.push(updatelimit ? (await promise) : promise);
     }
 
     let sysmsg_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', sysmsg_name);
     if(!fs.existsSync(sysmsg_filename) || crypto.createHash("sha256").update(fs.readFileSync(sysmsg_filename)).digest().toString("hex").toUpperCase() !== mappingData["sysmsg_hash"].toUpperCase()) {
       if(updatelog)
         console.log("[update] - " + sysmsg_name);
-      promises.push(autoUpdateFile(sysmsg_name, sysmsg_filename, TeraDataAutoUpdateServer + "map_base/" + sysmsg_name));
+
+      let promise = autoUpdateFile(sysmsg_name, sysmsg_filename, TeraDataAutoUpdateServer + "map_base/" + sysmsg_name);
+      promises.push(updatelimit ? (await promise) : promise);
     }
   }
 
   return [major_patch_versions, promises];
 }
 
-async function autoUpdate(moduleBase, modules, updatelog) {
+async function autoUpdate(moduleBase, modules, updatelog, updatelimit) {
   console.log("[update] Auto-update started!");
   let requiredDefs = new Set(["C_CHECK_VERSION.1.def"]);
 
@@ -163,7 +171,7 @@ async function autoUpdate(moduleBase, modules, updatelog) {
         try {
           updateData = JSON.parse(updateData);
           try {
-            const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog);
+            const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog, updatelimit);
             for(let def in moduleConfig["defs"]) {
               let def_data = moduleConfig["defs"][def];
               if(typeof def_data === 'object') {
@@ -212,11 +220,11 @@ async function autoUpdate(moduleBase, modules, updatelog) {
     }
   }
 
-  let updatePromises = await autoUpdateDefs(requiredDefs, updatelog);
-  let mapResults = await autoUpdateMaps(updatelog);
+  let updatePromises = await autoUpdateDefs(requiredDefs, updatelog, updatelimit);
+  let mapResults = await autoUpdateMaps(updatelog, updatelimit);
   updatePromises = updatePromises.concat(mapResults[1]);
 
-  let results = await Promise.all(updatePromises);
+  let results = updatelimit ? updatePromises : (await Promise.all(updatePromises));
   let failedFiles = [];
   for(let result of results) {
     if(!result[1])
