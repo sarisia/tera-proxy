@@ -19,6 +19,9 @@
     "request-promise-native": "^1.0.5",
     "tera-data": "github:hackerman-caali/tera-data",
     "tera-proxy-game": "github:hackerman-caali/tera-proxy-game",
-    "tera-proxy-sls": "github:hackerman-caali/tera-proxy-sls"
+    "tera-proxy-sls": "github:hackerman-caali/tera-proxy-sls",
+    "tera-crypto-js": "github:hackerman-caali/tera-crypto-js",
+    "tera-crypto-native": "github:hackerman-caali/tera-crypto-native",
+    "tera-vec3": "github:hackerman-caali/tera-vec3"
   }
 }
