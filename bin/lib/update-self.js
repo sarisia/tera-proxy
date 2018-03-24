@@ -24,13 +24,13 @@ async function autoUpdateFile(file, filepath, url) {
   }
 }
 
-async function autoUpdateSelf() {
+async function autoUpdateSelf(updatelimit = true) {
   if(!request) {
     console.error("ERROR: It looks like you've downloaded my proxy directly from GitHub without properly installing required dependencies!");
     console.error("ERROR: Please join %s and download the prepackaged release version from the #proxy channel!", DiscordURL);
     return Promise.reject("Request not installed");
   }
-  
+
   try {
     const manifest = await request({url: TeraProxyAutoUpdateServer + 'manifest.json', json: true});
     if(!manifest["files"])
@@ -48,11 +48,13 @@ async function autoUpdateSelf() {
           needsUpdate = (crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== filedata.toUpperCase());
         }
       }
-      if(needsUpdate)
-        promises.push(autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file));
+      if(needsUpdate) {
+        let promise = autoUpdateFile(file, filepath, TeraProxyAutoUpdateServer + file);
+        promises.push(updatelimit ? (await promise) : promise);
+      }
     }
 
-    let results = await Promise.all(promises);
+    let results = updatelimit ? promises : (await Promise.all(promises));
     if(results.length > 0)
     {
       let failedFiles = [];
