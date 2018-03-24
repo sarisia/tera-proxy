@@ -2,9 +2,9 @@
   "files": {
     "bin/lib/hosts.js": "e554c3d2593be08afc60f3db74ca96644c7b267e12d546cfbf5ef61c965da99a",
     "bin/lib/netstat.js": "2b7b5c825c82833403684545fc9b9cfc57cb878fa782bbde860805984119b6cb",
-    "bin/lib/proxy.js": "e664a43889a9798753b16cc34522f356e85c7a1728af4ef8c98221556e3fd2a1",
+    "bin/lib/proxy.js": "1edb01d8cb24a2bd0762d004182981a224716f0931c3b66ba9963ae1c18b4f4d",
     "bin/lib/regions.js": "0d5e22db7c2af5b2370981034d304fac551cd4d2f007b58e9184f8c0fd8ba75d",
-    "bin/lib/update.js": "5059aa356d2562c42740db76af75cb9ea4299aa68bbac12624c315d246c26c45",
+    "bin/lib/update.js": "565a574c3e9654c5724fe507150624f22f9ba1511c27883ccc7c43c55ebf019b",
     "bin/lib/update-self.js": "b14ab3b24d51057da75b2da6dd278c28fb84c9ba40ee177332612ce41379f73b",
     "bin/lib/res/servers-eu.json": {"overwrite": false, "hash": "2478cc8f3c4298cddb6b62efe860a096b82dcf8d8b4e3ebc63b5e92fd8aabfbd"},
     "bin/lib/res/servers-eu-test.json": {"overwrite": false, "hash": "3d246de5b38e3d5fb7d7ad64c1055725e4d65dbf66434c3a4aac5fcc4325991b"},
