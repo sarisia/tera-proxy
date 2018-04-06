@@ -9,7 +9,8 @@
 * You can install legacy mods that do not install auto-updating. To do so, just copy the corresponding folder into `bin/node_modules/` as you would have before.
 * Run `TeraProxy.bat` *as Administrator*, then start the game
 
-### Popular modules that are currently compatible (for an always up-to-date list, check out the #proxy-mods channel of the discord linked above)
+### Popular modules that are currently compatible
+For an always up-to-date list, check out the #proxy-mods channel of the discord linked above!
 * [Skill Prediction (SaltyMonkey's fork, included with the proxy by default)](https://github.com/SaltyMonkey/skill-prediction)
 * [FPS Utils (included with the proxy by default)](https://github.com/hugedong69/fps-utils)
 * [Arborean Apparel](https://github.com/hugedong69/arborean-apparel)
