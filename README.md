@@ -9,18 +9,26 @@
 * You can install legacy mods that do not install auto-updating. To do so, just copy the corresponding folder into `bin/node_modules/` as you would have before.
 * Run `TeraProxy.bat` *as Administrator*, then start the game
 
-### Popular modules that are currently compatible
-* [Skill Prediction (SaltyMonkey's fork)](https://github.com/SaltyMonkey/skill-prediction)
-* [FPS Utils](https://github.com/hugedong69/fps-utils)
+### Popular modules that are currently compatible (for an always up-to-date list, check out the #proxy-mods channel of the discord linked above)
+* [Skill Prediction (SaltyMonkey's fork, included with the proxy by default)](https://github.com/SaltyMonkey/skill-prediction)
+* [FPS Utils (included with the proxy by default)](https://github.com/hugedong69/fps-utils)
 * [Arborean Apparel](https://github.com/hugedong69/arborean-apparel)
 * [True Everful Nostrum (my fork)](https://github.com/hackerman-caali/true-everful-nostrum)
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
 * [Instant Enchant (my fork)](https://github.com/hackerman-caali/instant-enchant)
 * [Socialize](https://github.com/Leyki/Socialize/)
 * [Settings Saver](https://github.com/Kaseaa/Tera-Settings-Saver)
-* [Command / Chat-Sanitizer / Swim-Fix (Pinkie Pie's default modules)](https://github.com/pinkipi/tera-proxy)
+* [Command / Chat-Sanitizer / Swim-Fix (included with the proxy by default)](https://github.com/pinkipi/tera-proxy)
 * [CaaliLogger / CaaliStateTracker](https://github.com/hackerman-caali/data-logger)
-* [Ghillie Auto-Reset](https://github.com/Snugglez/GG-Reset)
+* [Ghillieglade Auto-Reset](https://github.com/Snugglez/GG-Reset)
+* [No Custom Loading Screens](https://github.com/hackerman-caali/no-custom-loadingscreens)
+* [Library](https://github.com/Kaseaa/library/)
+* [FPS-Booster 2000](https://github.com/Kaseaa/fps-booster-2000)
+* [Tuwanguide](https://github.com/Snugglez/Tuwanguide)
+* [Ping Compensation](https://github.com/Mister-Kay/ping-compensation)
+* [No More Noctenium Lag](https://github.com/Mister-Kay/no-more-noctenium-lag)
+* [RK-9 Guide](https://github.com/Shinoyx/rk9guide)
+* [Battle Notify (my fork)](https://github.com/hackerman-caali/battle-notify)
 * Bern's scripts
 * Kasea's Ping Remover
 
