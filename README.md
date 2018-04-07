@@ -30,6 +30,9 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [No More Noctenium Lag](https://github.com/Mister-Kay/no-more-noctenium-lag)
 * [RK-9 Guide](https://github.com/Shinoyx/rk9guide)
 * [Battle Notify (my fork)](https://github.com/hackerman-caali/battle-notify)
+* [Dress Up Your Friends](https://github.com/SerenTera/DressUpYourFriends)
+* [Monster Marker](https://github.com/SerenTera/monster-marker)
+* [No More Motes](https://github.com/Snugglez/No-More-Motes)
 * Bern's scripts
 * Kasea's Ping Remover
 
