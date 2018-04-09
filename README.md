@@ -33,6 +33,16 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [Dress Up Your Friends](https://github.com/SerenTera/DressUpYourFriends)
 * [Monster Marker](https://github.com/SerenTera/monster-marker)
 * [No More Motes](https://github.com/Snugglez/No-More-Motes)
+* [Skill Resets (my fork)](https://github.com/hackerman-caali/skill-resets)
+* [Auto-Vanguard (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-vanguard)
+* [Harrowhold P4 firewall markers](https://github.com/soler91/HH-Firewall-Markers)
+* [Boss Ping Remover (Kourinn's fork)](https://github.com/Mister-Kay/boss-ping-remover)
+* [No More Crazy Capes](https://github.com/Mister-Kay/no-more-crazy-capes)
+* [Enrage Notifier (Seraphinush's fork)](https://github.com/seraphinush-gaming/msg-enrage)
+* [Hide Players (Seraphinush's fork)](https://github.com/seraphinush-gaming/hide-players)
+* [Auto-Loot (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-loot)
+* [Auto-Cutscene / Skip Cutscenes (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-cutscene)
+* [Auto-Camera (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-camera)
 * Bern's scripts
 * Kasea's Ping Remover
 
