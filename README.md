@@ -43,6 +43,7 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [Auto-Loot (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-loot)
 * [Auto-Cutscene / Skip Cutscenes (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-cutscene)
 * [Auto-Camera (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-camera)
+* [No More Wasted Backstabs](https://github.com/Mister-Kay/no-more-wasted-backstabs)
 * Bern's scripts
 * Kasea's Ping Remover
 
