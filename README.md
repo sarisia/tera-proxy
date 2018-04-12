@@ -47,6 +47,7 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [Unmount Fix](https://github.com/Mister-Kay/unmount-fix)
 * [Stop Dismount](https://github.com/SerenTera/stop-dismount)
 * [AFK Notify](https://github.com/SerenTera/afk-notify)
+* [TCC Stub](https://github.com/Foglio1024/tcc-stub)
 * Bern's scripts
 * Kasea's Ping Remover
 
