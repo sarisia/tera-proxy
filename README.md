@@ -44,6 +44,9 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [Auto-Cutscene / Skip Cutscenes (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-cutscene)
 * [Auto-Camera (Seraphinush's fork)](https://github.com/seraphinush-gaming/auto-camera)
 * [No More Wasted Backstabs](https://github.com/Mister-Kay/no-more-wasted-backstabs)
+* [Unmount Fix](https://github.com/Mister-Kay/unmount-fix)
+* [Stop Dismount](https://github.com/SerenTera/stop-dismount)
+* [AFK Notify](https://github.com/SerenTera/afk-notify)
 * Bern's scripts
 * Kasea's Ping Remover
 
