@@ -67,7 +67,7 @@ async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, 
       }
     }
 
-    return {"defs": manifest["defs"], "results": updatelimit ? promises : (await Promise.all(promises))};
+    return {"defs": manifest["defs"], "load_on_connect": manifest["load_on_connect"], "results": updatelimit ? promises : (await Promise.all(promises))};
   } catch(e) {
     if(serverIndex + 1 < updateData["servers"].length)
         return autoUpdateModule(name, root, updateData, updatelog, updatelimit, serverIndex + 1);
@@ -194,7 +194,10 @@ async function autoUpdate(moduleBase, modules, updatelog, updatelimit) {
             if(failedFiles.length > 0)
               throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ");
 
-            successModules.push(module);
+            successModules.push({
+              "name": module,
+              "load_on_connect": moduleConfig["load_on_connect"],
+            });
           } catch(e) {
             console.error("ERROR: Unable to auto-update module %s:\n%s", module, e);
             if(updateData["supportUrl"]) {

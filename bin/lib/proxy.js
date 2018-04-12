@@ -123,15 +123,26 @@ function runServ(target, socket) {
     port: target.port
   });
 
+  // Load modules
   for (let name of lastUpdateResult["failed"])
     console.log("WARNING: Module %s could not be updated and will not be loaded!", name);
-  for (let name of lastUpdateResult["legacy"]) {
+  for (let name of lastUpdateResult["legacy"])
     console.log("WARNING: Module %s does not support auto-updating!", name);
-    connection.dispatch.load(name, module);
-  }
-  for (let name of lastUpdateResult["updated"])
-    connection.dispatch.load(name, module);
 
+  let versioncheck_modules = lastUpdateResult["legacy"];
+  for (let module_data of lastUpdateResult["updated"]) {
+    if (module_data["load_on_connect"])
+      connection.dispatch.load(name, module);
+    else
+      versioncheck_modules.push(module_data["name"]);
+  }
+
+  connection.dispatch.on("init", () => {
+    for (let name of versioncheck_modules)
+      connection.dispatch.load(name, module);
+  });
+
+  // Initialize server connection
   let remote = "???";
 
   socket.on("error", console.warn);
