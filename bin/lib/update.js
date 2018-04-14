@@ -175,10 +175,13 @@ async function autoUpdate(moduleBase, modules, updatelog, updatelimit) {
             for(let def in moduleConfig["defs"]) {
               let def_data = moduleConfig["defs"][def];
               if(typeof def_data === 'object') {
-                for(let def_ver of def_data)
-                  requiredDefs.add(def + "." + def_ver.toString() + ".def");
+                for(let def_ver of def_data) {
+                  if(def_ver !== 'raw')
+                    requiredDefs.add(def + "." + def_ver.toString() + ".def");
+                }
               } else {
-                requiredDefs.add(def + "." + def_data.toString() + ".def");
+                if(def_data !== 'raw')
+                  requiredDefs.add(def + "." + def_data.toString() + ".def");
               }
             }
 
