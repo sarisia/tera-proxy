@@ -129,7 +129,7 @@ function runServ(target, socket) {
   for (let name of lastUpdateResult["legacy"])
     console.log("WARNING: Module %s does not support auto-updating!", name);
 
-  let versioncheck_modules = lastUpdateResult["legacy"];
+  let versioncheck_modules = lastUpdateResult["legacy"].slice(0);
   for (let module_data of lastUpdateResult["updated"]) {
     if (module_data["load_on_connect"])
       connection.dispatch.load(name, module);
