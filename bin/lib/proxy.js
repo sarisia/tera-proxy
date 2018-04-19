@@ -110,14 +110,14 @@ function listenHandler(err) {
   }
 }
 
-let lastUpdateResult = {"major_patch_versions": {}, "failed": [], "legacy": [], "updated": []};
+let lastUpdateResult = {"protocol_data": {}, "failed": [], "legacy": [], "updated": []};
 
 function runServ(target, socket) {
   const { Connection, RealClient } = require("tera-proxy-game");
 
   const connection = new Connection({
     "console": isConsole,
-    "majorPatchVersions": lastUpdateResult["major_patch_versions"],
+    "protocol_data": lastUpdateResult["protocol_data"],
   });
   const client = new RealClient(connection, socket);
   const srvConn = connection.connect(client, {
