@@ -97,8 +97,10 @@ function listenHandler(err) {
     throw err;
   }
 
-  hosts.set(listenHostname, hostname);
-  console.log("[sls] server list overridden");
+  if (!isConsole) {
+    hosts.set(listenHostname, hostname);
+    console.log("[sls] server list overridden");
+  }
 
   for (let i = servers.entries(), step; !(step = i.next()).done; ) {
     const [id, server] = step.value;
