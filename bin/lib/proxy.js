@@ -18,11 +18,33 @@ if (!currentRegion) {
   console.error("Unsupported region: " + REGION);
   return;
 } else {
-  console.log(`[sls] Tera-Proxy configured for region ${REGION}!`);
+  // Region migration
+  let migratedFile = null;
+  switch(REGION) {
+    case "EU": {
+      if ((currentRegion.customServers["30"] && currentRegion.customServers["30"].name == "(EN) - Sikander (Proxy)") ||
+          (currentRegion.customServers["31"] && currentRegion.customServers["31"].name == "(DE) - Saleron (Proxy)") ||
+          (currentRegion.customServers["32"] && currentRegion.customServers["32"].name == "(FR) - Amarun (Proxy)") ||
+          (currentRegion.customServers["33"] && currentRegion.customServers["33"].name == "(INT) - Manahan (Proxy)"))
+        migratedFile = "./res/servers-eu.json";
+      break;
+    }
+    case "TH": {
+      if ((currentRegion.customServers["1"] && currentRegion.customServers["1"].name == "Karas (Proxy)") ||
+          (currentRegion.customServers["2"] && currentRegion.customServers["2"].name == "Zuras (Proxy)"))
+        migratedFile = "./res/servers-th.json";
+      break;
+    }
+  }
 
-  // TODO: make auto-updater remove this from servers-eu.json
-  if (REGION == "EU" && currentRegion.customServers["33"] && currentRegion.customServers["33"].name == "(INT) - Manahan (Proxy)")
-    delete currentRegion.customServers["33"];
+  if (migratedFile) {
+    require('fs').unlinkSync(migratedFile);
+    console.log(`Due to a change in the server list by the publisher, your server configuration for region ${REGION} was reset. Please restart proxy for the changes to take effect!`);
+    process.exit(1);
+  }
+
+  // No migration required
+  console.log(`[sls] Tera-Proxy configured for region ${REGION}!`);
 }
 
 let why;
