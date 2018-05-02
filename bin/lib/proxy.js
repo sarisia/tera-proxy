@@ -26,20 +26,24 @@ if (!currentRegion) {
           (currentRegion.customServers["31"] && currentRegion.customServers["31"].name == "(DE) - Saleron (Proxy)") ||
           (currentRegion.customServers["32"] && currentRegion.customServers["32"].name == "(FR) - Amarun (Proxy)") ||
           (currentRegion.customServers["33"] && currentRegion.customServers["33"].name == "(INT) - Manahan (Proxy)"))
-        migratedFile = "./res/servers-eu.json";
+        migratedFile = "res/servers-eu.json";
       break;
     }
     case "TH": {
       if ((currentRegion.customServers["1"] && currentRegion.customServers["1"].name == "Karas (Proxy)") ||
           (currentRegion.customServers["2"] && currentRegion.customServers["2"].name == "Zuras (Proxy)"))
-        migratedFile = "./res/servers-th.json";
+        migratedFile = "res/servers-th.json";
       break;
     }
   }
 
   if (migratedFile) {
-    require('fs').unlinkSync(migratedFile);
-    console.log(`Due to a change in the server list by the publisher, your server configuration for region ${REGION} was reset. Please restart proxy for the changes to take effect!`);
+    try {
+      require('fs').unlinkSync(require('path').join(__dirname, migratedFile));
+      console.log(`Due to a change in the server list by the publisher, your server configuration for region ${REGION} was reset. Please restart proxy for the changes to take effect!`);
+    } catch (e) {
+      console.log(`ERROR: Unable to migrate server list for region ${REGION}: ${e}`);
+    }
     process.exit(1);
   }
 
