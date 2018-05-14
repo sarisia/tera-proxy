@@ -138,6 +138,10 @@ function listenHandler(err) {
 
 let lastUpdateResult = {"protocol_data": {}, "failed": [], "legacy": [], "updated": []};
 
+function onConnectionError(err) {
+  console.warn(err);
+}
+
 function runServ(target, socket) {
   const { Connection, RealClient } = require("tera-proxy-game");
 
@@ -173,14 +177,14 @@ function runServ(target, socket) {
   // Initialize server connection
   let remote = "???";
 
-  socket.on("error", console.warn);
+  socket.on("error", onConnectionError);
 
   srvConn.on("connect", () => {
     remote = socket.remoteAddress + ":" + socket.remotePort;
     console.log("[connection] routing %s to %s:%d", remote, srvConn.remoteAddress, srvConn.remotePort);
   })
 
-  srvConn.on("error", console.warn);
+  srvConn.on("error", onConnectionError);
 
   srvConn.on("close", () => {
     console.log("[connection] %s disconnected", remote);
@@ -227,13 +231,21 @@ function startProxy() {
     dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
     proxy.fetch((err, gameServers) => {
-      if (err) throw err;
+      if (err) {
+        console.error(`ERROR: Unable to load the server list: ${err}`);
+        console.error("This is almost always caused by");
+        console.error(" - your setup (invasive virus scanners, viruses, ...)");
+        console.error(" - your internet connection (unstable/broken connection, improper configuration, geo-IP ban from the game region you're trying to play on, ...)");
+        console.error(" - game servers being down for maintenance");
+        console.error("Please test if you can regularly play the game (without proxy). If you can't, it's not a proxy issue, but one of the above.");
+        process.exit(1);
+      }
 
       for (let i = 0, arr = Object.keys(customServers), len = arr.length; i < len; ++i) {
         const id = arr[i];
         const target = gameServers[id];
         if (!target) {
-          console.error(`server ${id} not found`);
+          console.error(`[sls] WARNING: Server ${id} not found`);
           continue;
         }
 
