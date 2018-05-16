@@ -48,6 +48,12 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [Stop Dismount](https://github.com/SerenTera/stop-dismount)
 * [AFK Notify](https://github.com/SerenTera/afk-notify)
 * [TCC Stub](https://github.com/Foglio1024/tcc-stub)
+* [Box](https://github.com/ayylmar/box)
+* [Generic Box Opener / Item User](https://github.com/Owyn/generic-box-opener-item-user)
+* [Event Stars Cooldown Fix](https://github.com/ayylmar/fix-event-stars-cooldown)
+* [Abnormality Blocker](https://github.com/ayylmar/abnormality-blocker)
+* [Improved LFG](https://github.com/ayylmar/improved-lfg)
+* [No More Death Animations](https://github.com/ayylmar/no-more-death-animations)
 * Bern's scripts
 * Kasea's Ping Remover
 
