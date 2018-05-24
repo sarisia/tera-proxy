@@ -74,7 +74,7 @@ async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, 
         if(updatelog)
           console.log("[update] - " + file);
 
-        let promise = autoUpdateFile(file, filepath, file_url, updateData["drmKey"], expectedHash);
+        let promise = autoUpdateFile(file, filepath, file_url, updateData["drmKey"], manifest["no_hash_verification"] ? null : expectedHash);
         promises.push(updatelimit ? (await promise) : promise);
       }
     }
