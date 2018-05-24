@@ -139,7 +139,21 @@ function listenHandler(err) {
 let lastUpdateResult = {"protocol_data": {}, "failed": [], "legacy": [], "updated": []};
 
 function onConnectionError(err) {
-  console.warn(err);
+  switch(err.code) {
+    case 'ETIMEDOUT':
+      console.error(`ERROR: Unable to connect to game server at ${err.address}:${err.port} (timeout)! Common reasons for this are:`);
+      console.error("- An unstable internet connection or a geo-IP ban");
+      console.error("- Game server maintenance");
+      break;
+    case 'ECONNRESET':
+      console.error("ERROR: Connection to game server was closed unexpectedly. Common reasons for this are:");
+      console.error("- A disconnect caused by an unstable internet connection");
+      console.error("- An exploit/cheat or broken module that got you kicked");
+      break;
+    default:
+      console.warn(err);
+      break;
+  }
 }
 
 function runServ(target, socket) {

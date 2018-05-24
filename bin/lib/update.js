@@ -21,10 +21,17 @@ function forcedirSync(dir) {
   }, initDir);
 }
 
-async function autoUpdateFile(file, filepath, url, drmKey) {
+function hash(data) {
+  return crypto.createHash("sha256").update(data).digest().toString("hex").toUpperCase();
+}
+
+async function autoUpdateFile(file, filepath, url, drmKey, expectedHash = null) {
   try {
     const updatedFile = await request({url: url, qs: {"drmkey": drmKey}, encoding: null});
 
+    if(expectedHash && expectedHash !== hash(updatedFile))
+      throw "Downloaded file doesn't match hash specified in patch manifest! Possible causes:\n   + Incorrect manifest specified by module developer\n   + NoPing (if you're using it) has a bug that can fuck up the download";
+    
     forcedirSync(path.dirname(filepath));
     fs.writeFileSync(filepath, updatedFile);
     return [file, true, ""];
@@ -49,20 +56,25 @@ async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, 
     for(let file in manifest["files"]) {
       let filepath = path.join(root, file);
       let filedata = manifest["files"][file];
+      
       let needsUpdate = !fs.existsSync(filepath);
+      let expectedHash = null;
       if(!needsUpdate) {
         if(typeof filedata === 'object') {
-          needsUpdate = filedata["overwrite"] && (crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== filedata["hash"].toUpperCase());
+          expectedHash = filedata["hash"].toUpperCase();
+          needsUpdate = filedata["overwrite"] && (hash(fs.readFileSync(filepath)) !== expectedHash);
         } else {
-          needsUpdate = (crypto.createHash("sha256").update(fs.readFileSync(filepath)).digest().toString("hex").toUpperCase() !== filedata.toUpperCase());
+          expectedHash = filedata.toUpperCase();
+          needsUpdate = (hash(fs.readFileSync(filepath)) !== expectedHash);
         }
       }
+      
       if(needsUpdate) {
         const file_url = updateData["servers"][serverIndex] + file;
         if(updatelog)
           console.log("[update] - " + file);
 
-        let promise = autoUpdateFile(file, filepath, file_url, updateData["drmKey"]);
+        let promise = autoUpdateFile(file, filepath, file_url, updateData["drmKey"], expectedHash);
         promises.push(updatelimit ? (await promise) : promise);
       }
     }
@@ -140,7 +152,7 @@ async function autoUpdateMaps(updatelog, updatelimit) {
     }
 
     let protocol_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', protocol_name);
-    if(!fs.existsSync(protocol_filename) || crypto.createHash("sha256").update(fs.readFileSync(protocol_filename)).digest().toString("hex").toUpperCase() !== mappingData["protocol_hash"].toUpperCase()) {
+    if(!fs.existsSync(protocol_filename) || hash(fs.readFileSync(protocol_filename)) !== mappingData["protocol_hash"].toUpperCase()) {
       if(updatelog)
         console.log("[update] - " + protocol_name);
 
@@ -149,7 +161,7 @@ async function autoUpdateMaps(updatelog, updatelimit) {
     }
 
     let sysmsg_filename = path.join(__dirname, '..', '..', 'node_modules', 'tera-data', 'map_base', sysmsg_name);
-    if(!fs.existsSync(sysmsg_filename) || crypto.createHash("sha256").update(fs.readFileSync(sysmsg_filename)).digest().toString("hex").toUpperCase() !== mappingData["sysmsg_hash"].toUpperCase()) {
+    if(!fs.existsSync(sysmsg_filename) || hash(fs.readFileSync(sysmsg_filename)) !== mappingData["sysmsg_hash"].toUpperCase()) {
       if(updatelog)
         console.log("[update] - " + sysmsg_name);
 

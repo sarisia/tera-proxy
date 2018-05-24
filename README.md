@@ -56,6 +56,7 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [No More Death Animations](https://github.com/ayylmar/no-more-death-animations)
 * Bern's scripts
 * Kasea's Ping Remover
+* ... and many more
 
 ### Developers: Adding auto-update compatibility to your module
 * You'll need to create two files in your root update directory (called UpdateRoot from now on): `module.json` and `manifest.json`.
