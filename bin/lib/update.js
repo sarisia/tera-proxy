@@ -30,8 +30,8 @@ async function autoUpdateFile(file, filepath, url, drmKey, expectedHash = null) 
     const updatedFile = await request({url: url, qs: {"drmkey": drmKey}, encoding: null});
 
     if(expectedHash && expectedHash !== hash(updatedFile))
-      throw "Downloaded file doesn't match hash specified in patch manifest! Possible causes:\n   + Incorrect manifest specified by module developer\n   + NoPing (if you're using it) has a bug that can fuck up the download";
-    
+      console.warn("WARNING: " + file + "\nDownloaded file doesn't match hash specified in patch manifest! Possible causes:\n   + Incorrect manifest specified by module developer\n   + NoPing (if you're using it) has a bug that can fuck up the download");
+
     forcedirSync(path.dirname(filepath));
     fs.writeFileSync(filepath, updatedFile);
     return [file, true, ""];
@@ -56,7 +56,7 @@ async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, 
     for(let file in manifest["files"]) {
       let filepath = path.join(root, file);
       let filedata = manifest["files"][file];
-      
+
       let needsUpdate = !fs.existsSync(filepath);
       let expectedHash = null;
       if(!needsUpdate) {
@@ -68,7 +68,7 @@ async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, 
           needsUpdate = (hash(fs.readFileSync(filepath)) !== expectedHash);
         }
       }
-      
+
       if(needsUpdate) {
         const file_url = updateData["servers"][serverIndex] + file;
         if(updatelog)
