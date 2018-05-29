@@ -67,6 +67,14 @@ module.exports = {
     customServers: require('./res/servers-kr-test.json'),
     listenHostname: "127.0.0.17"
   },
+  "RU-TEST": {
+    url: "http://ptr.tera-online.ru/launcher/sls/",
+    hostname: "ptr.tera-online.ru",
+    address: "91.225.237.2",
+    port: 80,
+    customServers: require("./res/servers-ru-test.json"),
+    listenHostname: "127.0.0.19"
+  },
   "PS4-NA": {
     console: true,
     customServers: require('./res/servers-ps4-na.json')
