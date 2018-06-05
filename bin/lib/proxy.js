@@ -179,7 +179,7 @@ function runServ(target, socket) {
   for (let module_data of lastUpdateResult["updated"]) {
     if (module_data["load_on"] === "connect")
       connection.dispatch.load(module_data["name"], module);
-    else
+    else if(module_data["load_on"] === "versioncheck")
       versioncheck_modules.push(module_data["name"]);
   }
 
