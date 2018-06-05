@@ -1,5 +1,5 @@
 const DiscordURL = "https://discord.gg/maqBmJV";
-const {region: REGION, updatelog: UPDATE_LOG, updateat: UPDATE_AT, updatelimit: UPDATE_LIMIT} = (() => {
+const {region: REGION, updatelog: UPDATE_LOG, updatelimit: UPDATE_LIMIT} = (() => {
     try {
         return require("../config.json")
     } catch(_) {
@@ -177,8 +177,8 @@ function runServ(target, socket) {
 
   let versioncheck_modules = lastUpdateResult["legacy"].slice(0);
   for (let module_data of lastUpdateResult["updated"]) {
-    if (module_data["load_on_connect"])
-      connection.dispatch.load(name, module);
+    if (module_data["load_on"] === "connect")
+      connection.dispatch.load(module_data["name"], module);
     else
       versioncheck_modules.push(module_data["name"]);
   }
@@ -218,29 +218,13 @@ function createServ(target, socket) {
   socket.setNoDelay(true);
 
   populateModulesList();
-
-  if(UPDATE_AT === "login") {
-    autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
-      if(!updateResult["tera-data"])
-        console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
-
-      delete require.cache[require.resolve("tera-data-parser")];
-      delete require.cache[require.resolve("tera-proxy-game")];
-
-      lastUpdateResult = updateResult;
-      runServ(target, socket);
-    }).catch((e) => {
-      console.log("ERROR: Unable to auto-update: %s", e);
-    })
-  } else {
-    runServ(target, socket);
-  }
+  runServ(target, socket);
 }
 
 const SlsProxy = require("tera-proxy-sls");
 const proxy = new SlsProxy(currentRegion);
 
-function startProxy() {
+function startProxy() {  
   if(!isConsole) {
     dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
@@ -279,25 +263,29 @@ function startProxy() {
 
     listenHandler();
   }
+  
+  // TODO: this is a dirty hack, implement this stuff properly
+  for (let module_data of lastUpdateResult["updated"]) {
+    if (module_data["load_on"] === "startup") {
+      console.log(`[proxy] Initializing module ${module_data["name"]}`);
+      require(module_data["name"]);
+    }
+  }
 }
 
-if(!UPDATE_AT || UPDATE_AT === "startup") {
-  populateModulesList();
-  autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
-    if(!updateResult["tera-data"])
-      console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
-
-    delete require.cache[require.resolve("tera-data-parser")];
-    delete require.cache[require.resolve("tera-proxy-game")];
-
-    lastUpdateResult = updateResult;
-    startProxy();
-  }).catch((e) => {
-    console.log("ERROR: Unable to auto-update: %s", e);
-  })
-} else {
+populateModulesList();
+autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
+  if(!updateResult["tera-data"])
+    console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
+  
+  delete require.cache[require.resolve("tera-data-parser")];
+  delete require.cache[require.resolve("tera-proxy-game")];
+  
+  lastUpdateResult = updateResult;
   startProxy();
-}
+}).catch((e) => {
+  console.log("ERROR: Unable to auto-update: %s", e);
+})
 
 const isWindows = process.platform === "win32";
 
