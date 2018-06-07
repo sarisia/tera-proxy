@@ -25,7 +25,9 @@ if (!currentRegion) {
       if ((currentRegion.customServers["30"] && currentRegion.customServers["30"].name == "(EN) - Sikander (Proxy)") ||
           (currentRegion.customServers["31"] && currentRegion.customServers["31"].name == "(DE) - Saleron (Proxy)") ||
           (currentRegion.customServers["32"] && currentRegion.customServers["32"].name == "(FR) - Amarun (Proxy)") ||
-          (currentRegion.customServers["33"] && currentRegion.customServers["33"].name == "(INT) - Manahan (Proxy)"))
+          (currentRegion.customServers["33"] && currentRegion.customServers["33"].name == "(INT) - Manahan (Proxy)") ||
+          !currentRegion.customServers["34"] ||
+          !currentRegion.customServers["35"])
         migratedFile = "res/servers-eu.json";
       break;
     }
