@@ -30,6 +30,13 @@ module.exports = {
     customServers: require("./res/servers-kr.json"),
     listenHostname: "127.0.0.13"
   },
+  "KR-NAVER": {
+    url: "http://tera.nexon.game.naver.com/launcher/sls/servers/list.xml",
+    hostname: "tera.nexon.game.naver.com",
+    port: 80,
+    customServers: require("./res/servers-kr.json"),
+    listenHostname: "127.0.0.20"
+  },
   JP: {
     url: "https://tera.pmang.jp/game_launcher/server_list.xml?usn=0",
     hostname: "tera.pmang.jp",
