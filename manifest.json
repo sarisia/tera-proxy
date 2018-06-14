@@ -24,7 +24,7 @@
     "node_modules/tera-data-parser/lib/index.js": "1dc8646247dbd51dbf389c544d3d1fe1253893ff89c203c93973712f2d1a75f6",
     "node_modules/tera-data-parser/lib/parsers/def.js": "090de37b0fc6773104d5e4d3980745b96ca2b65820eb3c15ea5cd83e385fa324",
     "node_modules/tera-data-parser/lib/protocol/index.js": "dd39b38308c736169729a10f03f4e241ef3adfbe40c1514ce874e060ce74735b",
-    "node_modules/tera-data-parser/lib/protocol/stream.js": "248432182e8d824e0015feee3ca43a1d27857740a3845c64fa5fc4e0a2a7162c",
+    "node_modules/tera-data-parser/lib/protocol/stream.js": "0d917243920a19363d1cef43b0e5cf40044caede37778e3326785ec2849ef947",
     "node_modules/tera-data-parser/lib/protocol/types/index.js": "cd3c0706dee5bdadb3bb52dbec6c19091aac52b9d2ca5a99825c5d995d6989e2",
     "node_modules/tera-data-parser/lib/protocol/types/skillid.js": "5e8d5cf5fc3a7c370ef211f60c702647760febac7d7b874bcceaaafd2ea967e7",
     "node_modules/tera-proxy-game/lib/packetBuilder.js": "66f49a4d771a20d9bd15283e8b4933f104da9c7c68652ab154a42354776b6d68",
