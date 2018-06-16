@@ -3,17 +3,18 @@
 * Feel free to visit my Discord server at https://discord.gg/maqBmJV
 
 ### Installation instructions
-* Set your region in `bin/config.json`
+* Download and run the setup from the #proxy channel in the Discord server linked above. A manual installation is possible, but not recommended!
 * The first auto-update after installing the proxy or new mods may take a few seconds. This is because all required files will be downloaded automatically.
-* A lot of popular modules are already pre-installed for your convenience - check out `bin/node_modules/`. If you don't want to use a particular mod, just delete the corresponding folder or prefix its folder name with an underscore (`_`).
-* You can install legacy mods that do not install auto-updating. To do so, just copy the corresponding folder into `bin/node_modules/` as you would have before.
+* The most popular modules are already pre-installed for your convenience - check out `bin/node_modules/`. If you don't want to use a particular mod, just delete the corresponding folder or prefix its folder name with an underscore (`_`).
 * Run `TeraProxy.bat` *as Administrator*, then start the game
 
-### Popular modules that are currently compatible
+### Popular and fully compatible modules
 For an always up-to-date list, check out the #proxy-mods channel of the discord linked above!
 * [Skill Prediction (SaltyMonkey's fork, included with the proxy by default)](https://github.com/SaltyMonkey/skill-prediction)
-* [FPS Utils (included with the proxy by default)](https://github.com/hugedong69/fps-utils)
-* [Arborean Apparel](https://github.com/hugedong69/arborean-apparel)
+* [FPS Utils (included with the proxy by default)](https://github.com/codeagon/fps-utils)
+* [Xigncode Bypass (optionally installed by default)](https://github.com/hackerman-caali/xigncode-bypass)
+* [Arborean Apparel](https://github.com/codeagon/arborean-apparel)
+* [Astral Tera](https://github.com/codeagon/Astral-TERA)
 * [True Everful Nostrum (my fork)](https://github.com/hackerman-caali/true-everful-nostrum)
 * [Instant Soulbind](https://github.com/beng-mods/instant-soulbind)
 * [Instant Enchant (my fork)](https://github.com/hackerman-caali/instant-enchant)
@@ -54,6 +55,11 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [Abnormality Blocker](https://github.com/ayylmar/abnormality-blocker)
 * [Improved LFG](https://github.com/ayylmar/improved-lfg)
 * [No More Death Animations](https://github.com/ayylmar/no-more-death-animations)
+* [Infinity Journal (JustPassingBy's fork)](https://github.com/ayylmar/infinity-journal)
+* [Antaroth's Abyss Guide](https://github.com/Owyn/aaguide)
+* [Tera-Guide](https://github.com/Kaseaa/tera-guide)
+* [Mongord](https://github.com/soler91/mongord)
+* [No Drunk Screen](https://github.com/codeagon/no-drunk-screen)
 * Bern's scripts
 * Kasea's Ping Remover
 * ... and many more
