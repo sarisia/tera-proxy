@@ -20,6 +20,8 @@
     "bin/lib/res/servers-ps4-na.json": {"overwrite": false, "hash": "4042486ead0a16dc7afbdf751acd631758e4d871983d86967ff2147db6b30da7"},
     "bin/lib/res/servers-xbone-eu.json": {"overwrite": false, "hash": "4042486ead0a16dc7afbdf751acd631758e4d871983d86967ff2147db6b30da7"},
     "bin/lib/res/servers-xbone-na.json": {"overwrite": false, "hash": "4042486ead0a16dc7afbdf751acd631758e4d871983d86967ff2147db6b30da7"},
+    "bin/node_modules/command/module.json": "1f4b7c83c4aadfc7568fbc6d9add9c326dd277597cf12ed1570cb9e29c71836c",
+    "bin/node_modules/tera-game-state/module.json": "bba9bcf0f89b461b8b1874742d9db82fa1e1ed95c32bb08426425a4ce2349957",
     "node_modules/tera-data-parser/package.json": "8271eaf3ef6f536f37be63c0ff3db3238233bbb139ded469f7334918e0e01ace",
     "node_modules/tera-data-parser/lib/index.js": "1dc8646247dbd51dbf389c544d3d1fe1253893ff89c203c93973712f2d1a75f6",
     "node_modules/tera-data-parser/lib/parsers/def.js": "6ae4466d8f41cd996c56770d90617e6f01e70843b5b6df413ec83b09289f31c6",
