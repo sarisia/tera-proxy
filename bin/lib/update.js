@@ -25,6 +25,24 @@ function hash(data) {
   return crypto.createHash("sha256").update(data).digest().toString("hex").toUpperCase();
 }
 
+function walkdir(dir, listFiles = true, listDirs = false, listRootDir="") {
+  let results = [];
+  fs.readdirSync(dir).forEach(function(file) {
+    const fullpath = path.join(dir, file);
+    const relpath = path.join(listRootDir, file);
+    const stat = fs.statSync(fullpath);
+    if (stat && stat.isDirectory()) {
+      if (listDirs)
+        results.push(relpath);
+      results = results.concat(walkdir(fullpath, listFiles, listDirs, relpath));
+    } else {
+      if (listFiles)
+        results.push(relpath);
+    }
+  });
+  return results;
+}
+
 async function autoUpdateFile(file, filepath, url, drmKey, expectedHash = null) {
   try {
     const updatedFile = await request({url: url, qs: {"drmkey": drmKey}, encoding: null});
@@ -72,11 +90,33 @@ async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, 
       if(needsUpdate) {
         const file_url = updateData["servers"][serverIndex] + file;
         if(updatelog)
-          console.log("[update] - " + file);
+          console.log("[update] - Download " + file);
 
         let promise = autoUpdateFile(file, filepath, file_url, updateData["drmKey"], manifest["no_hash_verification"] ? null : expectedHash);
         promises.push(updatelimit ? (await promise) : promise);
       }
+    }
+
+    if(manifest["force_clean"]) {
+      // Remove unlisted files
+      walkdir(root, true, false).forEach(filepath => {
+        if(!manifest["files"][filepath] && filepath != 'module.json') {
+          if(updatelog)
+            console.log("[update] - Delete " + filepath);
+          fs.unlinkSync(path.join(root, filepath));
+        }
+      });
+
+      // Remove empty folders
+      walkdir(root, false, true).forEach(folderpath => {
+        try {
+          // Just try deleting it, will fail if it's not empty
+          fs.rmdirSync(path.join(root, folderpath));
+
+          if(updatelog)
+            console.log("[update] - Delete " + folderpath);
+        } catch(_) { }
+      });
     }
 
     return {"defs": manifest["defs"], "load_on": manifest["load_on_startup"] ? "startup" : (manifest["load_on_connect"] ? "connect" : "versioncheck"), "results": updatelimit ? promises : (await Promise.all(promises))};
