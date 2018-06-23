@@ -9,7 +9,7 @@
 * Run `TeraProxy.bat` *as Administrator*, then start the game
 
 ### Popular and fully compatible modules
-For an always up-to-date list, check out the #proxy-mods channel of the discord linked above!
+Almost all tera-proxy modules are compatible with my proxy. For an always up-to-date list, check out the #proxy-mods channel of [my discord](https://discord.gg/maqBmJV)!
 * [Skill Prediction (SaltyMonkey's fork, included with the proxy by default)](https://github.com/SaltyMonkey/skill-prediction)
 * [FPS Utils (included with the proxy by default)](https://github.com/codeagon/fps-utils)
 * [Xigncode Bypass (optionally installed by default)](https://github.com/hackerman-caali/xigncode-bypass)
@@ -60,6 +60,15 @@ For an always up-to-date list, check out the #proxy-mods channel of the discord 
 * [Tera-Guide](https://github.com/Kaseaa/tera-guide)
 * [Mongord](https://github.com/soler91/mongord)
 * [No Drunk Screen](https://github.com/codeagon/no-drunk-screen)
+* [Hide Dmg](https://github.com/soler91/hide-dmg)
+* [Anti Bodyblock](https://github.com/soler91/Anti-Bodyblock)
+* [Quickload (Haku's fork)](https://github.com/HakuryuuDom/quick-load/blob/master/README.md)
+* [Essentials](https://github.com/TeraProxy/Essentials)
+* [Cosplayer](https://github.com/TeraProxy/Cosplayer)
+* [Vanguardian](https://github.com/TeraProxy/Vanguardian)
+* [Inspector](https://github.com/TeraProxy/Inspector)
+* [AFKer](https://github.com/TeraProxy/AFKer)
+* [Teabagger](https://github.com/TeraProxy/Teabagger)
 * Bern's scripts
 * Kasea's Ping Remover
 * ... and many more
