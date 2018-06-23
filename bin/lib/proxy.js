@@ -73,8 +73,20 @@ if (!isConsole) {
   * Make sure no anti-virus software is running.
   * Locate "${e.path}", right click the file, click 'Properties', uncheck 'Read-only' then click 'OK'.`);
       break;
+     case "EBUSY":
+      console.error(`ERROR: Hosts file is busy and cannot be written to.
+
+  * Make sure no anti-virus software is running.
+  * Try deleting "${e.path}".`);
+      break;
      case "EPERM":
       console.error(`ERROR: Insufficient permission to modify hosts file.
+
+  * Make sure no anti-virus software is running.
+  * Right click TeraProxy.bat and select 'Run as administrator'.`);
+      break;
+     case "ENOENT":
+      console.error(`ERROR: Unable to write to hosts file.
 
   * Make sure no anti-virus software is running.
   * Right click TeraProxy.bat and select 'Run as administrator'.`);
