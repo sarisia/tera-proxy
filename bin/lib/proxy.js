@@ -1,5 +1,5 @@
 const DiscordURL = "https://discord.gg/maqBmJV";
-const {region: REGION, updatelog: UPDATE_LOG, updatelimit: UPDATE_LIMIT} = (() => {
+const {region: REGION, updatelog: UPDATE_LOG, updatelimit: UPDATE_LIMIT, dnsservers: DNS_SERVERS} = (() => {
     try {
         return require("../config.json")
     } catch(_) {
@@ -160,7 +160,8 @@ function onConnectionError(err) {
       console.error("- Game server maintenance");
       break;
     case 'ECONNRESET':
-      console.error("ERROR: Connection to game server was closed unexpectedly. Common reasons for this are:");
+    case 'EPIPE':
+      console.error(`ERROR: ${err.code} - Connection to game server was closed unexpectedly. Common reasons for this are:`);
       console.error("- A disconnect caused by an unstable internet connection");
       console.error("- An exploit/cheat or broken module that got you kicked");
       break;
@@ -240,7 +241,7 @@ const proxy = new SlsProxy(currentRegion);
 
 function startProxy() {  
   if(!isConsole) {
-    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+    dns.setServers(DNS_SERVERS || ["8.8.8.8", "8.8.4.4"]);
 
     proxy.fetch((err, gameServers) => {
       if (err) {
