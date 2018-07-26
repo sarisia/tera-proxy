@@ -224,70 +224,84 @@ async function autoUpdate(moduleBase, modules, updatelog, updatelimit) {
     if(!module.endsWith('.js')) {
       let root = path.join(moduleBase, module);
       try {
-        let updateData = fs.readFileSync(path.join(root, 'module.json'), 'utf8');
-        try {
-          updateData = JSON.parse(updateData);
-          if(updateData["disableAutoUpdate"]) {
-            console.warn("WARNING: Auto-update disabled for module %s!", module);
-            successModules.push({
-              "name": module,
-              "options": updateData["options"] || {},
-            });
-          } else {
-            try {
-              const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog, updatelimit);
-              for(let def in moduleConfig["defs"]) {
-                let def_data = moduleConfig["defs"][def];
-                if(typeof def_data === 'object') {
-                  for(let def_ver of def_data) {
-                    if(def_ver !== 'raw')
-                      requiredDefs.add(def + "." + def_ver.toString() + ".def");
-                  }
-                } else {
-                  if(def_data !== 'raw')
-                    requiredDefs.add(def + "." + def_data.toString() + ".def");
-                }
-              }
-            
-              let failedFiles = [];
-              for(let result of moduleConfig["results"]) {
-                if(!result[1]) {
-                  failedFiles.push(result[0]);
-                  failedFiles.push(result[2]);
-                }
-              }
-            
-            
-              if(failedFiles.length > 0)
-                throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ");
-            
+        let moduleConfigChanged;
+        do {
+          moduleConfigChanged = false;
+
+          let updateData = fs.readFileSync(path.join(root, 'module.json'), 'utf8');
+          try {
+            updateData = JSON.parse(updateData);
+            if(updateData["disableAutoUpdate"]) {
+              console.warn("WARNING: Auto-update disabled for module %s!", module);
               successModules.push({
                 "name": module,
                 "options": updateData["options"] || {},
               });
-            } catch(e) {
-              console.error("ERROR: Unable to auto-update module %s:\n%s", module, e);
-              if(updateData["supportUrl"]) {
-                console.error("Please go to %s and follow the given instructions or ask for help.", updateData["supportUrl"]);
-                if(updateData["supportUrl"] !== DiscordURL)
-                  console.error("Alternatively, join %s and ask in the #help channel.", DiscordURL);
-              } else {
-                console.error("Please contact the module author or join %s and ask in the #help channel.", DiscordURL);
+            } else {
+              try {
+                const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog, updatelimit);
+
+                let failedFiles = [];
+                for(let result of moduleConfig["results"]) {
+                  if(!result[1]) {
+                    failedFiles.push(result[0]);
+                    failedFiles.push(result[2]);
+                  } else {
+                    if(result[0] === "module.json") {
+                      moduleConfigChanged = true;
+                      if(updatelog)
+                        console.log("[update] - Module configuration changed, restarting update!");
+                    }
+                  }
+                }
+
+                if(!moduleConfigChanged) {
+                  for(let def in moduleConfig["defs"]) {
+                    let def_data = moduleConfig["defs"][def];
+                    if(typeof def_data === 'object') {
+                      for(let def_ver of def_data) {
+                        if(def_ver !== 'raw')
+                          requiredDefs.add(def + "." + def_ver.toString() + ".def");
+                      }
+                    } else {
+                      if(def_data !== 'raw')
+                        requiredDefs.add(def + "." + def_data.toString() + ".def");
+                    }
+                  }
+
+
+                  if(failedFiles.length > 0)
+                    throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ");
+
+                  successModules.push({
+                    "name": module,
+                    "options": updateData["options"] || {},
+                  });
+                }
+              } catch(e) {
+                console.error("ERROR: Unable to auto-update module %s:\n%s", module, e);
+                if(updateData["supportUrl"]) {
+                  console.error("Please go to %s and follow the given instructions or ask for help.", updateData["supportUrl"]);
+                  if(updateData["supportUrl"] !== DiscordURL)
+                    console.error("Alternatively, join %s and ask in the #help channel.", DiscordURL);
+                } else {
+                  console.error("Please contact the module author or join %s and ask in the #help channel.", DiscordURL);
+                }
+
+                failedModules.push({
+                  "name": module,
+                  "options": updateData["options"] || {},
+                });
               }
-            
-              failedModules.push({
-                "name": module,
-                "options": updateData["options"] || {},
-              });
             }
+          } catch(e) {
+            console.error("ERROR: Failed to parse auto-update configuration for module %s:\n%s", module, e);
+            failedModules.push({
+              "name": module,
+              "options": {},
+            });
           }
-        } catch(e) {
-          console.error("ERROR: Failed to parse auto-update configuration for module %s:\n%s", module, e);
-          failedModules.push({
-            "name": module,
-            "options": {},
-          });
-        }
+        } while(moduleConfigChanged);
       } catch(_) {
         // legacy module without auto-update functionality
         legacyModules.push({
