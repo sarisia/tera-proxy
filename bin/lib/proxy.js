@@ -192,6 +192,7 @@ function runServ(target, socket) {
 
   let versioncheck_modules = lastUpdateResult["legacy"].slice(0);
   for (let mod of lastUpdateResult["updated"]) {
+    mod.options.rootFolder = path.join(moduleBase, mod.name);
     if (mod.options.loadOn === "connect")
       connection.dispatch.load(mod.name, module, mod.options);
     else if(!mod.options.loadOn || mod.options.loadOn === "versioncheck")
@@ -239,7 +240,7 @@ function createServ(target, socket) {
 const SlsProxy = require("tera-proxy-sls");
 const proxy = new SlsProxy(currentRegion);
 
-function startProxy() {  
+function startProxy() {
   if(!isConsole) {
     dns.setServers(DNS_SERVERS || ["8.8.8.8", "8.8.4.4"]);
 
@@ -278,9 +279,10 @@ function startProxy() {
 
     listenHandler();
   }
-  
+
   // TODO: this is a dirty hack, implement this stuff properly
   for (let mod of lastUpdateResult["updated"]) {
+    mod.options.rootFolder = path.join(moduleBase, mod.name);
     if (mod.options.loadOn === "startup") {
       console.log(`[proxy] Initializing module ${mod.name}`);
       require(mod.name);
@@ -292,10 +294,10 @@ populateModulesList();
 autoUpdate(moduleBase, modules, UPDATE_LOG, UPDATE_LIMIT).then((updateResult) => {
   if(!updateResult["tera-data"])
     console.log("WARNING: There were errors updating tera-data. This might result in further errors.");
-  
+
   delete require.cache[require.resolve("tera-data-parser")];
   delete require.cache[require.resolve("tera-proxy-game")];
-  
+
   lastUpdateResult = updateResult;
   startProxy();
 }).catch((e) => {
