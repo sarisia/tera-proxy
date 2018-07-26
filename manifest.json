@@ -4,7 +4,7 @@
     "bin/lib/netstat.js": "2b7b5c825c82833403684545fc9b9cfc57cb878fa782bbde860805984119b6cb",
     "bin/lib/proxy.js": "8aef2c12d635fad8162fbd3a6f3e0b888cac9f28dacc9db624d1fde63eb53c28",
     "bin/lib/regions.js": "e46ab51949b1e98e546a10f7e080ba03e7559c4b9344781f1fd9235baa5e84c5",
-    "bin/lib/update.js": "e6dbc284ae076e40a99a4b7115d0ff38768f487b3166b05f6aca89bd439224ad",
+    "bin/lib/update.js": "81a7d11825e5b616e745581de6d2182ed9f9d8ac46882d073a7f95f741c3e940",
     "bin/lib/update-self.js": "d6a14295cbf41152ee59d18836319e11cf642961db4ffc94d8113fbe14d46a69",
     "bin/lib/res/servers-eu.json": {"overwrite": false, "hash": "eb85173ec6a059f9b83974d036ec40d7769986d6e9c2de6125dc37946e656a61"},
     "bin/lib/res/servers-eu-test.json": {"overwrite": false, "hash": "3d246de5b38e3d5fb7d7ad64c1055725e4d65dbf66434c3a4aac5fcc4325991b"},
