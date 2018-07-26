@@ -1,7 +1,7 @@
 const DiscordURL = "https://discord.gg/maqBmJV";
 const {region: REGION, updatelog: UPDATE_LOG, updatelimit: UPDATE_LIMIT, dnsservers: DNS_SERVERS} = (() => {
     try {
-        return require("../config.json")
+        return require("../config.json");
     } catch(_) {
         console.log("ERROR: Whoops, looks like you've fucked up your config.json!");
         console.log("ERROR: Try to fix it yourself or ask in the #help channel of %s!", DiscordURL);
@@ -13,6 +13,8 @@ const REGIONS = require("./regions");
 const currentRegion = REGIONS[REGION];
 const isConsole = currentRegion["console"];
 const { customServers, listenHostname, hostname } = currentRegion;
+const fs = require("fs");
+const path = require("path");
 
 if (!currentRegion) {
   console.error("Unsupported region: " + REGION);
@@ -41,12 +43,12 @@ if (!currentRegion) {
 
   if (migratedFile) {
     try {
-      require('fs').unlinkSync(require('path').join(__dirname, migratedFile));
+      fs.unlinkSync(path.join(__dirname, migratedFile));
       console.log(`Due to a change in the server list by the publisher, your server configuration for region ${REGION} was reset. Please restart proxy for the changes to take effect!`);
     } catch (e) {
       console.log(`ERROR: Unable to migrate server list for region ${REGION}: ${e}`);
     }
-    process.exit(1);
+    return;
   }
 
   // No migration required
@@ -57,9 +59,7 @@ let why;
 try { why = require("why-is-node-running"); }
 catch (_) {}
 
-const fs = require("fs");
 const net = require("net");
-const path = require("path");
 const dns = require("dns");
 const hosts = require("./hosts");
 
@@ -95,7 +95,7 @@ if (!isConsole) {
       throw e;
     }
 
-    process.exit(1);
+    return;
   }
 }
 
