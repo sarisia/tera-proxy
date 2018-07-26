@@ -192,9 +192,9 @@ function runServ(target, socket) {
 
   let versioncheck_modules = lastUpdateResult["legacy"].slice(0);
   for (let mod of lastUpdateResult["updated"]) {
-    if (!mod.options.loadOn || mod.options.loadOn === "connect")
+    if (mod.options.loadOn === "connect")
       connection.dispatch.load(mod.name, module, mod.options);
-    else if(mod.options.loadOn === "versioncheck")
+    else if(!mod.options.loadOn || mod.options.loadOn === "versioncheck")
       versioncheck_modules.push(mod);
   }
 
