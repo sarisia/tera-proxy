@@ -185,22 +185,22 @@ function runServ(target, socket) {
   });
 
   // Load modules
-  for (let name of lastUpdateResult["failed"])
-    console.log("WARNING: Module %s could not be updated and will not be loaded!", name);
-  for (let name of lastUpdateResult["legacy"])
-    console.log("WARNING: Module %s does not support auto-updating!", name);
+  for (let mod of lastUpdateResult["failed"])
+    console.log("WARNING: Module %s could not be updated and will not be loaded!", mod.name);
+  for (let mod of lastUpdateResult["legacy"])
+    console.log("WARNING: Module %s does not support auto-updating!", mod.name);
 
   let versioncheck_modules = lastUpdateResult["legacy"].slice(0);
-  for (let module_data of lastUpdateResult["updated"]) {
-    if (module_data["load_on"] === "connect")
-      connection.dispatch.load(module_data["name"], module);
-    else if(module_data["load_on"] === "versioncheck")
-      versioncheck_modules.push(module_data["name"]);
+  for (let mod of lastUpdateResult["updated"]) {
+    if (!mod.options.loadOn || mod.options.loadOn === "connect")
+      connection.dispatch.load(mod.name, module, mod.options);
+    else if(mod.options.loadOn === "versioncheck")
+      versioncheck_modules.push(mod);
   }
 
   connection.dispatch.on("init", () => {
-    for (let name of versioncheck_modules)
-      connection.dispatch.load(name, module);
+    for (let mod of versioncheck_modules)
+      connection.dispatch.load(mod.name, module, mod.options);
   });
 
   // Initialize server connection
@@ -280,10 +280,10 @@ function startProxy() {
   }
   
   // TODO: this is a dirty hack, implement this stuff properly
-  for (let module_data of lastUpdateResult["updated"]) {
-    if (module_data["load_on"] === "startup") {
-      console.log(`[proxy] Initializing module ${module_data["name"]}`);
-      require(module_data["name"]);
+  for (let mod of lastUpdateResult["updated"]) {
+    if (mod.options.loadOn === "startup") {
+      console.log(`[proxy] Initializing module ${mod.name}`);
+      require(mod.name);
     }
   }
 }

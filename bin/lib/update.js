@@ -119,7 +119,7 @@ async function autoUpdateModule(name, root, updateData, updatelog, updatelimit, 
       });
     }
 
-    return {"defs": manifest["defs"], "load_on": manifest["load_on_startup"] ? "startup" : (manifest["load_on_connect"] ? "connect" : "versioncheck"), "results": updatelimit ? promises : (await Promise.all(promises))};
+    return {"defs": manifest["defs"], "results": updatelimit ? promises : (await Promise.all(promises))};
   } catch(e) {
     if(serverIndex + 1 < updateData["servers"].length)
         return autoUpdateModule(name, root, updateData, updatelog, updatelimit, serverIndex + 1);
@@ -227,59 +227,79 @@ async function autoUpdate(moduleBase, modules, updatelog, updatelimit) {
         let updateData = fs.readFileSync(path.join(root, 'module.json'), 'utf8');
         try {
           updateData = JSON.parse(updateData);
-          try {
-            const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog, updatelimit);
-            for(let def in moduleConfig["defs"]) {
-              let def_data = moduleConfig["defs"][def];
-              if(typeof def_data === 'object') {
-                for(let def_ver of def_data) {
-                  if(def_ver !== 'raw')
-                    requiredDefs.add(def + "." + def_ver.toString() + ".def");
-                }
-              } else {
-                if(def_data !== 'raw')
-                  requiredDefs.add(def + "." + def_data.toString() + ".def");
-              }
-            }
-
-            let failedFiles = [];
-            for(let result of moduleConfig["results"]) {
-              if(!result[1]) {
-                failedFiles.push(result[0]);
-                failedFiles.push(result[2]);
-              }
-            }
-
-
-            if(failedFiles.length > 0)
-              throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ");
-
+          if(updateData["disableAutoUpdate"]) {
+            console.warn("WARNING: Auto-update disabled for module %s!", module);
             successModules.push({
               "name": module,
-              "load_on": moduleConfig["load_on"],
+              "options": updateData["options"] || {},
             });
-          } catch(e) {
-            console.error("ERROR: Unable to auto-update module %s:\n%s", module, e);
-            if(updateData["supportUrl"]) {
-              console.error("Please go to %s and follow the given instructions or ask for help.", updateData["supportUrl"]);
-              if(updateData["supportUrl"] !== DiscordURL)
-                console.error("Alternatively, join %s and ask in the #help channel.", DiscordURL);
-            } else {
-              console.error("Please contact the module author or join %s and ask in the #help channel.", DiscordURL);
+          } else {
+            try {
+              const moduleConfig = await autoUpdateModule(module, root, updateData, updatelog, updatelimit);
+              for(let def in moduleConfig["defs"]) {
+                let def_data = moduleConfig["defs"][def];
+                if(typeof def_data === 'object') {
+                  for(let def_ver of def_data) {
+                    if(def_ver !== 'raw')
+                      requiredDefs.add(def + "." + def_ver.toString() + ".def");
+                  }
+                } else {
+                  if(def_data !== 'raw')
+                    requiredDefs.add(def + "." + def_data.toString() + ".def");
+                }
+              }
+            
+              let failedFiles = [];
+              for(let result of moduleConfig["results"]) {
+                if(!result[1]) {
+                  failedFiles.push(result[0]);
+                  failedFiles.push(result[2]);
+                }
+              }
+            
+            
+              if(failedFiles.length > 0)
+                throw "Failed to update the following module files:\n - " + failedFiles.join("\n - ");
+            
+              successModules.push({
+                "name": module,
+                "options": updateData["options"] || {},
+              });
+            } catch(e) {
+              console.error("ERROR: Unable to auto-update module %s:\n%s", module, e);
+              if(updateData["supportUrl"]) {
+                console.error("Please go to %s and follow the given instructions or ask for help.", updateData["supportUrl"]);
+                if(updateData["supportUrl"] !== DiscordURL)
+                  console.error("Alternatively, join %s and ask in the #help channel.", DiscordURL);
+              } else {
+                console.error("Please contact the module author or join %s and ask in the #help channel.", DiscordURL);
+              }
+            
+              failedModules.push({
+                "name": module,
+                "options": updateData["options"] || {},
+              });
             }
-
-            failedModules.push(module);
           }
         } catch(e) {
           console.error("ERROR: Failed to parse auto-update configuration for module %s:\n%s", module, e);
-          failedModules.push(module);
+          failedModules.push({
+            "name": module,
+            "options": {},
+          });
         }
       } catch(_) {
         // legacy module without auto-update functionality
-        legacyModules.push(module);
+        legacyModules.push({
+          "name": module,
+          "options": {},
+        });
       }
     } else {
-      legacyModules.push(module);
+      legacyModules.push({
+        "name": module,
+        "options": {},
+      });
     }
   }
 
