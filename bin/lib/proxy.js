@@ -193,15 +193,35 @@ function runServ(target, socket) {
   let versioncheck_modules = lastUpdateResult["legacy"].slice(0);
   for (let mod of lastUpdateResult["updated"]) {
     mod.options.rootFolder = path.join(moduleBase, mod.name);
-    if (mod.options.loadOn === "connect")
-      connection.dispatch.load(mod.name, module, mod.options);
-    else if(!mod.options.loadOn || mod.options.loadOn === "versioncheck")
+    if (mod.options.loadOn === "connect") {
+      // Load default modules first
+      for (let mod of versioncheck_modules) {
+        if (mod.name === 'command' || mod.name === 'tera-game-state')
+          connection.dispatch.load(mod.name, module, mod.options);
+      }
+
+      // Then load other modules
+      for (let mod of versioncheck_modules) {
+        if (mod.name !== 'command' && mod.name !== 'tera-game-state')
+          connection.dispatch.load(mod.name, module, mod.options);
+      }
+    } else if(!mod.options.loadOn || mod.options.loadOn === "versioncheck") {
       versioncheck_modules.push(mod);
+    }
   }
 
   connection.dispatch.on("init", () => {
-    for (let mod of versioncheck_modules)
-      connection.dispatch.load(mod.name, module, mod.options);
+    // Load default modules first
+    for (let mod of versioncheck_modules) {
+      if (mod.name === 'command' || mod.name === 'tera-game-state')
+        connection.dispatch.load(mod.name, module, mod.options);
+    }
+
+    // Then load other modules
+    for (let mod of versioncheck_modules) {
+      if (mod.name !== 'command' && mod.name !== 'tera-game-state')
+        connection.dispatch.load(mod.name, module, mod.options);
+    }
   });
 
   // Initialize server connection
