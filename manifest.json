@@ -2,8 +2,8 @@
   "files": {
     "bin/lib/hosts.js": "e554c3d2593be08afc60f3db74ca96644c7b267e12d546cfbf5ef61c965da99a",
     "bin/lib/netstat.js": "2b7b5c825c82833403684545fc9b9cfc57cb878fa782bbde860805984119b6cb",
-    "bin/lib/proxy.js": "4792d3b6ba1517f8076da833f804ac6d763c91264f7e94e9d304d43d5cf971c8",
-    "bin/lib/regions.js": "1fa6c1f87282d9afd151ab549c88afeafc465f13bf2d6ab58536de84e5344c8f",
+    "bin/lib/proxy.js": "132ee47841ba6848a47be63a11f1b977d586bcab3d391ae5e770b77b88145e35",
+    "bin/lib/regions.js": "ff6334d32eddd98607e0654c523a76a91661f2999e2f8cd370550cffcbcd3950",
     "bin/lib/update.js": "ad4b8506807f3931c7728515d36620bde3fbde9051d1730dbe88a43c52033461",
     "bin/lib/update-self.js": "d6a14295cbf41152ee59d18836319e11cf642961db4ffc94d8113fbe14d46a69",
     "bin/lib/res/servers-eu.json": {"overwrite": false, "hash": "eb85173ec6a059f9b83974d036ec40d7769986d6e9c2de6125dc37946e656a61"},

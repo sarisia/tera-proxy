@@ -40,6 +40,7 @@ module.exports = {
   JP: {
     url: "https://tera.pmang.jp/game_launcher/server_list.xml?usn=0",
     hostname: "tera.pmang.jp",
+    altHostnames: ["tera-hangame.pmang.jp"],
     port: 443,
     customServers: require("./res/servers-jp.json"),
     listenHostname: "127.0.0.14"
@@ -85,6 +86,7 @@ module.exports = {
   "JP-CLASSIC": {
     url: "https://tera.pmang.jp/classic_game_launcher/server_list.xml?usn=0",
     hostname: "tera.pmang.jp",
+    altHostnames: ["tera-hangame.pmang.jp"],
     port: 443,
     customServers: require("./res/servers-jp-classic.json"),
     listenHostname: "127.0.0.20"

@@ -13,6 +13,7 @@ const REGIONS = require("./regions");
 const currentRegion = REGIONS[REGION];
 const isConsole = currentRegion["console"];
 const { customServers, listenHostname, hostname } = currentRegion;
+const altHostnames = currentRegion.altHostnames || [];
 const fs = require("fs");
 const path = require("path");
 
@@ -64,8 +65,11 @@ const dns = require("dns");
 const hosts = require("./hosts");
 
 if (!isConsole) {
-  try { hosts.remove(listenHostname, hostname); }
-  catch (e) {
+  try {
+    hosts.remove(listenHostname, hostname);
+    for (let x of altHostnames)
+      hosts.remove(listenHostname, x);
+  } catch (e) {
     switch (e.code) {
      case "EACCES":
       console.error(`ERROR: Hosts file is set to read-only.
@@ -139,6 +143,9 @@ function listenHandler(err) {
 
   if (!isConsole) {
     hosts.set(listenHostname, hostname);
+    for (let x of altHostnames)
+      hosts.set(listenHostname, x);
+
     console.log("[sls] server list overridden");
   }
 
@@ -330,7 +337,11 @@ function cleanExit() {
   console.log("terminating...");
 
   if(!isConsole) {
-    try { hosts.remove(listenHostname, hostname); }
+    try {
+      hosts.remove(listenHostname, hostname);
+      for (let x of altHostnames)
+        hosts.remove(listenHostname, x);
+    }
     catch (_) {}
 
     proxy.close();
